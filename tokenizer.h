@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 James Poore. All rights reserved.
 //
 
-
 #ifndef CPU_Simulator_Loader_tokenizer_h
 #define CPU_Simulator_Loader_tokenizer_h
 

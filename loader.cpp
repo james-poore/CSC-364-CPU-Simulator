@@ -20,14 +20,13 @@
 #define MAX_LINE_LENGTH 500
 
 void loadValue(bool *instruction, int counter, int a, int b, int c, int d) {
+    
     int counter2 = ((counter * 4) -1);
     instruction[counter2] = a;
     instruction[counter2 - 1] = b;
     instruction[counter2 - 2] = c;
     instruction[counter2 - 3] = d;
 }
-
-
 
 void processLine(char *line) {
     
@@ -44,9 +43,9 @@ void processLine(char *line) {
     
     int counter = 4;
     
-    expandedToken = strdup(answer.start);
-    
     while (!doneFlag) {
+        
+        expandedToken = strdup(answer.start);
         
         switch (answer.type) {
             
@@ -144,6 +143,21 @@ void processLine(char *line) {
             case aToken::REGISTER:
                 
             case aToken::DATA:
+                if (((int) expandedToken > 15) && counter == 2) {
+                    counter = 1;
+                    intToBoolN((int) expandedToken, 8, instruction);
+                    doneFlag = 1;
+                    break;
+                }
+                
+                else if (((int) expandedToken > 15) && counter != 2) {
+                    //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
+                }
+                
+                else {
+                    intToBoolN((int) expandedToken, 4, instruction);
+                    break;
+                }
                 
             default:
                 //Invalid instruction...will handle error later.
