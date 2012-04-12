@@ -47,7 +47,9 @@ void processLine(char *line) {
     expandedToken = strdup(answer.start);
     
     while (!doneFlag) {
+        
         switch (answer.type) {
+            
             case aToken::MEM_LOCATION:
                 break;
                 
@@ -141,7 +143,7 @@ void processLine(char *line) {
                 
             case aToken::REGISTER:
                 
-            case aToken::NUMBER:
+            case aToken::DATA:
                 
             default:
                 //Invalid instruction...will handle error later.
