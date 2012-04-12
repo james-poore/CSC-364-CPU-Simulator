@@ -9,6 +9,6 @@
 #ifndef CPU_Simulator_Loader_loader_h
 #define CPU_Simulator_Loader_loader_h
 
-
+int loadFile(FILE *file)
 
 #endif
