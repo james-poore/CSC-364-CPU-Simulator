@@ -5,6 +5,7 @@
 #include "CPUFunctions.h"
 #include "Global.h"
 #include "Helper.h"
+#include "loader.h"
 
 using namespace std;
 
@@ -17,7 +18,11 @@ int OVERFLOW_FLAG = 0;
 
 int main()
 {
-
+    FILE * testFile;
+    testFile = fopen("Test.txt", "r");
+    loadFile(testFile, memory);
+    cout << "Loaded the file." << endl;
+    printMemoryLocation(30, memory);
 	/*setMemoryInt(0, 30000, memory);
 	setMemoryInt(1,1, memory);
 	set(0, 42, memory);
