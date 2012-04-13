@@ -37,7 +37,10 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     char *expandedToken = NULL;
     char *registerNum = NULL;
+    char *memLoc1 = NULL;
+    char *memLoc2 = NULL;
     
+    bool tempMemLoc[WORD_SIZE];
     bool instruction[WORD_SIZE];
     
     startToken(line);
@@ -46,20 +49,38 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     answer = getNextToken();
     
     int counter = 4;
-    int i = 0;
     
     while (!doneFlag) {
         
+        int i = 0;
         expandedToken = strdup(answer.start);
         
         switch (answer.type) {
             
             case aToken::MEM_LOCATION:
-                //set memLocation
-                break;
+                while (expandedToken[i] != '=') {
+                    memLoc1[i] = expandedToken[i];
+                    i++;
+                }
+                i++;
+                while (expandedToken[i] != '\n') {
+                    memLoc2[i] = expandedToken[i];
+                    i++;
+                }
+                
+                if (strcasecmp(memLoc2, "ASM") == 0) {
+                    memLocation = atoi(memLoc1);
+                    break;
+                }
+                else {
+                    intToBoolQuartet(atoi(memLoc2), WORD_SIZE, 1, tempMemLoc);
+                    setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
+                    break;
+                }
                 
             case aToken::EOL:
                 doneFlag = 1;
+                break;
                 
             case aToken::OP_CODE:
                 if (strcasecmp(expandedToken, "MOVE") == 0) {
