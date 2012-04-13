@@ -28,13 +28,23 @@ int main()
 	printMemoryLocation(2, memory);
 	cout << "Result of subI: " << boolNtoInt(WORD_SIZE, memory[2]) << endl;*/
 
-    
-    
-    intToBoolQuartet(15, 4, 1, memory[3]);
-    intToBoolQuartet(12, 4, 2, memory[3]);
-    intToBoolQuartet(9, 4, 3, memory[3]);
-    intToBoolQuartet(-10, 4, 4, memory[3]);
-    printMemoryLocation(3, memory);
+    setMemoryInt(0, 0, memory);
+    setMemoryInt(1, 1, memory);
+    setMemoryInt(2, -1, memory);
+    setMemoryInt(3, 5, memory);
+    for(int i = 0; i < 4; i++)
+    {
+        printMemoryLocation(i, memory);
+    }
+    cout << endl << endl;
+    moveZ(4, 3, 1, memory);
+    moveX(5, 3, 0, memory);
+    moveP(6, 3, 2, memory);
+    moveN(7, 3, 1, memory);
+    for(int i = 4; i < 8; i++)
+    {
+        printMemoryLocation(i, memory);
+    }
     cout << "Negative flag: " << NEGATIVE_FLAG << endl;
     cout << "Overflow flag: " << OVERFLOW_FLAG << endl;
     
