@@ -86,7 +86,7 @@ aToken getNextToken()
             }
             
             if (*currTokPos == 'R') {
-                res.start = currTokPos;
+                res.start = currTokPos++;
                 res.type = aToken::REGISTER;
             }
             

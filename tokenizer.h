@@ -19,6 +19,8 @@ typedef struct
     enum { OP_CODE, EOL, MEM_LOCATION, DATA, REGISTER } type;
 } aToken;
 
+static char* currTokPos;
+
 /***
  * startToken:
  *    Register the start of a new line to tokenize.

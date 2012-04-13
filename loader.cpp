@@ -31,7 +31,7 @@ void loadValue(bool *instruction, int counter, int a, int b, int c, int d) {
     instruction[counter2 - 3] = d;
 }
 
-void processLine(char *line) {
+void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     int doneFlag = 0;
     
@@ -145,6 +145,7 @@ void processLine(char *line) {
                 }
                 
             case aToken::REGISTER:
+                while 
                 
             case aToken::DATA:
                 if (((int) expandedToken > 15) && counter == 2) {
@@ -176,7 +177,7 @@ void processLine(char *line) {
     }
     
     setMemoryBoolArray(memLocation, instruction, memory);
-    memLocation += 16;
+    memLocation++;
     
 }
 
@@ -186,7 +187,7 @@ int loadFile(FILE *file, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     while (fgets(line, MAX_LINE_LENGTH + 1, file) != NULL) {
         
-        processLine(line);  
+        processLine(line, memory);  
         
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/loader.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/loader.h">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/tokenizer.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/tokenizer.h">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/CPUFunctions.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/CPUFunctions.h">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/Global.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/Global.h">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/Helper.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/Helper.h">
+   </FileRef>
+   <FileRef
+      location = "group:CSC-364-CPU-Simulator/Main.cpp">
+   </FileRef>
+</Workspace>
