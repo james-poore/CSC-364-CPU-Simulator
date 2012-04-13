@@ -145,7 +145,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
             case aToken::REGISTER:
-                while (currTokPos != ',') {
+                while (*currTokPos != ',') {
                     
                 }
                 
