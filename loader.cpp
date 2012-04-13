@@ -150,20 +150,20 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
             case aToken::DATA:
-                if (((int) expandedToken > 15) && counter == 2) {
+                if (((int) *expandedToken > 15) && counter == 2) {
                     counter = 1;
-                    intToBoolQuartet((int) expandedToken, 8, counter, instruction);
+                    intToBoolQuartet((int) *expandedToken, 8, counter, instruction);
                     doneFlag = 1;
                     break;
                 }
                 
-                else if (((int) expandedToken > 15) && counter != 2) {
+                else if (((int) *expandedToken > 15) && counter != 2) {
                     //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
                     break;
                 }
                 
                 else {
-                    intToBoolQuartet((int) expandedToken, 4, counter, instruction);
+                    intToBoolQuartet((int) *expandedToken, 4, counter, instruction);
                     break;
                 }
                 
