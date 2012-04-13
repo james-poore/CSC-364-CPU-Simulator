@@ -1,5 +1,5 @@
 /*
- * CPUFunctions.C
+ * CPUFunctions.cpp
  * Code for the 16 CPU functions.
  * Author: Dillon Welch
  */ 
@@ -7,6 +7,8 @@
 /* NOTE: Functions go from most significant bit to least significant bit. */
 
 /* TODO: All ops after sub */
+
+/* I'm so confused */
 
 #include <iostream>
 #include <stdlib.h>
