@@ -84,7 +84,7 @@ aToken getNextToken()
             //Check to see if this token is a number
             if (*currTokPos == 0 || 1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 9 ) {
                 res.start = currTokPos;
-                res.type = aToken::NUMBER;
+                res.type = aToken::DATA;
             }
             
             if (*currTokPos == 'R') {
