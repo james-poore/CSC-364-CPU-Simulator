@@ -145,7 +145,9 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
             case aToken::REGISTER:
-                while 
+                while (currTokPos != ',') {
+                    
+                }
                 
             case aToken::DATA:
                 if (((int) expandedToken > 15) && counter == 2) {
