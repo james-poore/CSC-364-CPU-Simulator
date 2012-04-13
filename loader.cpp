@@ -35,7 +35,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     int doneFlag = 0;
     
-    char* expandedToken = NULL;
+    char *expandedToken = NULL;
+    char *registerNum = NULL;
     
     bool instruction[WORD_SIZE];
     
@@ -145,25 +146,29 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
             case aToken::REGISTER:
-                while (*currTokPos != ',') {
-                    
+                int i = 0;
+                while (expandedToken[i] != ',') {
+                    registerNum[i] = expandedToken[i];
+                    i++;
                 }
+                intToBoolQuartet(atoi(expandedToken), 4, counter, instruction);
+                break;
                 
             case aToken::DATA:
                 if (((int) *expandedToken > 15) && counter == 2) {
                     counter = 1;
-                    intToBoolQuartet((int) *expandedToken, 8, counter, instruction);
+                    intToBoolQuartet(atoi(expandedToken), 8, counter, instruction);
                     doneFlag = 1;
                     break;
                 }
                 
-                else if (((int) *expandedToken > 15) && counter != 2) {
+                else if ((atoi(expandedToken) > 15) && counter != 2) {
                     //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
                     break;
                 }
                 
                 else {
-                    intToBoolQuartet((int) *expandedToken, 4, counter, instruction);
+                    intToBoolQuartet(atoi(expandedToken), 4, counter, instruction);
                     break;
                 }
                 
