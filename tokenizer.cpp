@@ -64,7 +64,7 @@ aToken getNextToken()
     {
         case '#': // The # tells the loader to use this line to find the starting postion
                   // for loading the program into memory
-            res.start = currTokPos;
+            res.start = currTokPos++;
             res.type = aToken::MEM_LOCATION;
             return res;
             
