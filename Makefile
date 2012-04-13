@@ -6,7 +6,7 @@ CC=g++
 CFLAGS=-Wall -g -c
 LFLAGS=-Wall -g
 
-EXEC=CPU_Simulator
+EXEC=CPU-Simulator
 
 OBJS=CPUFunctions.o Helper.o Main.o tokenizer.o loader.o
 
