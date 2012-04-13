@@ -15,9 +15,12 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "tokenizer.h"
-#include "helper.h"
+#include "Helper.h"
+#include "Global.h"
 
 #define MAX_LINE_LENGTH 500
+
+int memLocation = 0;
 
 void loadValue(bool *instruction, int counter, int a, int b, int c, int d) {
     
@@ -34,7 +37,7 @@ void processLine(char *line) {
     
     char* expandedToken = NULL;
     
-    bool instruction[16];
+    bool instruction[WORD_SIZE];
     
     startToken(line);
     aToken answer;
@@ -50,6 +53,7 @@ void processLine(char *line) {
         switch (answer.type) {
             
             case aToken::MEM_LOCATION:
+                //set memLocation
                 break;
                 
             case aToken::EOL:
@@ -145,17 +149,18 @@ void processLine(char *line) {
             case aToken::DATA:
                 if (((int) expandedToken > 15) && counter == 2) {
                     counter = 1;
-                    intToBoolN((int) expandedToken, 8, instruction);
+                    intToBoolQuartet((int) expandedToken, 8, counter, instruction);
                     doneFlag = 1;
                     break;
                 }
                 
                 else if (((int) expandedToken > 15) && counter != 2) {
                     //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
+                    break;
                 }
                 
                 else {
-                    intToBoolN((int) expandedToken, 4, instruction);
+                    intToBoolQuartet((int) expandedToken, 4, counter, instruction);
                     break;
                 }
                 
@@ -164,18 +169,25 @@ void processLine(char *line) {
                 break;
         }
     
+        
         counter--;
         free(expandedToken);
     
     }
+    
+    setMemoryBoolArray(memLocation, instruction, memory);
+    memLocation += 16;
+    
 }
 
-int loadFile(FILE *file) {
+int loadFile(FILE *file, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     char line[MAX_LINE_LENGTH + 1];
     
-    while (fgets(line, MAX_LINE_LENGTH + 1, file) != NULL)
+    while (fgets(line, MAX_LINE_LENGTH + 1, file) != NULL) {
+        
         processLine(line);  
-    
+        
+    }
 }
 
