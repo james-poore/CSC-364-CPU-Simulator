@@ -46,6 +46,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     answer = getNextToken();
     
     int counter = 4;
+    int i = 0;
     
     while (!doneFlag) {
         
@@ -146,7 +147,6 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
             case aToken::REGISTER:
-                int i = 0;
                 while (expandedToken[i] != ',') {
                     registerNum[i] = expandedToken[i];
                     i++;
