@@ -17,7 +17,6 @@
 #include <stdlib.h>
 
 static char* tokLine = NULL;
-static char* currTokPos;
 
 void startToken(char* line)
 {
@@ -31,7 +30,7 @@ void startToken(char* line)
     // Make a copy of the line (so we have it safely)
     
     // Reallocated space
-    if ((tokLine = realloc(tokLine, strlen(line)+1)) == NULL)
+    if ((tokLine = (char *)realloc(tokLine, strlen(line)+1)) == NULL)
     {
         // Not enough memory???
         fprintf(stderr, "ERROR: Insufficient memory to tokenize!  Using empty space.\n");
