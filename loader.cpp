@@ -192,5 +192,7 @@ int loadFile(FILE *file, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
         processLine(line, memory);  
         
     }
+    
+    return 0;
 }
 
