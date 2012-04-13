@@ -8,10 +8,6 @@
 
 /* TODO: All ops after sub */
 
-/* I'm so confused */
-
-//ME TOO
-
 #include <iostream>
 #include <stdlib.h>
 
@@ -192,14 +188,19 @@ void setH(int regD, int data8, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  */
 void incIZ(int regD, int data4, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
+    int result = 1;
     for(int i = WORD_SIZE -1; i >= 0; i--)
     {
         if(memory[regB][i] == 1)
         {
-            return;
+            result = 0;
+            break;
         }
     }
-    addI(regD, regD, data4, memory);
+    if(result == 1)
+    {
+        addI(regD, regD, data4, memory);
+    }
 }
 
 /*
@@ -208,9 +209,74 @@ void incIZ(int regD, int data4, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]
  */
 void decIN(int regD, int data4, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    
+    if(memory[regB][WORD_SIZE - 1] == 1)
+    {
+        subI(regD, regD, data4, memory);
+    }
 }
-void moveZ(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
-void moveX(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
-void moveP(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
-void moveN(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
+
+/*
+ * void moveZ(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Moves regA into regD if regB is 0.
+ */
+void moveZ(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    int result = 1;
+    for(int i = WORD_SIZE -1; i >= 0; i--)
+    {
+        if(memory[regB][i] == 1)
+        {
+            result = 0;
+            break;
+        }
+    }
+    if(result == 1)
+    {
+        move(regD, regA, memory);
+    }
+}
+
+/*
+ * void moveX(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Moves regA into regD if regB is not 0.
+ */
+void moveX(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    int result = 0;
+    for(int i = WORD_SIZE -1; i >= 0; i--)
+    {
+        if(memory[regB][i] == 1)
+        {
+            result = 1;
+            break;
+        }
+    }
+    if(result == 1)
+    {
+        move(regD, regA, memory);
+    }
+}
+
+/*
+ * void moveP(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Moves regA into regD if regB15 is 0 (positive number).
+ */
+void moveP(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    if(memory[regB][WORD_SIZE - 1] == 0)
+    {
+        move(regD, regA, memory);
+    }
+}
+
+/*
+ * void moveN(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Moves regA into regD if regB15 is 1 (negative number).
+ */
+void moveN(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    if(memory[regB][WORD_SIZE - 1] == 1)
+    {
+        move(regD, regA, memory);
+    }
+}
