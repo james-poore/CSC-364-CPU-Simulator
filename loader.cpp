@@ -50,7 +50,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     int counter = 4;
     
-    while (!doneFlag) {
+    while (!doneFlag || counter > 0) {
         
         int i = 0;
         int j = 0;
