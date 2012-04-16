@@ -53,19 +53,20 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     while (!doneFlag) {
         
         int i = 0;
+        int j = 0;
         expandedToken = strdup(answer.start);
         
         switch (answer.type) {
             
             case aToken::MEM_LOCATION:
-                while (expandedToken[i] != '=') {
-                    memLoc1[i] = expandedToken[i];
-                    i++;
+                while (expandedToken[j] != '=') {
+                    memLoc1[j] = expandedToken[j];
+                    j++;
                 }
-                i++;
-                while (expandedToken[i] != '\n') {
-                    memLoc2[i] = expandedToken[i];
-                    i++;
+                j++;
+                while (expandedToken[j] != '\n') {
+                    memLoc2[j] = expandedToken[j];
+                    j++;
                 }
                 
                 if (strcasecmp(memLoc2, "ASM") == 0) {
