@@ -22,7 +22,7 @@
 
 int memLocation = 0;
 
-void loadValue(bool *instruction, int counter, int a, int b, int c, int d) {
+void loadValue(bool instruction, int counter, int a, int b, int c, int d) {
     
     int counter2 = ((counter * 4) -1);
     instruction[counter2] = a;
