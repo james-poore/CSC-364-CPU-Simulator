@@ -22,7 +22,7 @@
 
 int memLocation = 0;
 
-void loadValue(bool *instruction, int counter, int a, int b, int c, int d) {
+void loadValue(bool instruction[WORD_SIZE], int counter, int a, int b, int c, int d) {
     
     int counter2 = ((counter * 4) -1);
     instruction[counter2] = a;
@@ -54,6 +54,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
         
         int i = 0;
         int j = 0;
+        
         expandedToken = strdup(answer.start);
         
         switch (answer.type) {

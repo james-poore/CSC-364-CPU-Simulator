@@ -18,7 +18,7 @@ $(EXEC): $(OBJS)
 
 include $(OBJS:.o=.d)   # Include All Object Dependencies
 
-%.o: %.c
+%.o: %.cpp
 	$(CC) $(CFLAGS) $*.cpp
 
 clean:
