@@ -1,2 +1,26 @@
+//This is a comment
 #30=ASM
-MOVE R1, R0
+//This is also a comment
+#4=21
+#1=32
+#2=42
+MOVE R5, R7 //This is yet another comment
+NOT R4, R5
+AND R1, R2, R3
+OR R2, R3, R4
+ADD R10, R11, R12
+Sub R6, R7, R8
+aDdI R8, R13, 12
+subi R9, R15, 7
+SET R6, 42
+//Yet another comment
+SETH R4, 32
+INCIZ R5, 8, R9
+DECIN R14, 3, R10
+#5=46
+MOVEZ R1, R4, R8
+MOVEX R9, R3, R5
+MOVEP R13, R12, R15
+MOVEN R7, R9, R10
+#6=2 //Comment
+//Testing comments

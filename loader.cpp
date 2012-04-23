@@ -33,27 +33,36 @@ void loadValue(bool instruction[WORD_SIZE], int counter, int a, int b, int c, in
 
 void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
-    int doneFlag = 0;
+    bool doneFlag = 0;
     
     char *expandedToken = NULL;
-    char *registerNum = NULL;
-    char *memLoc1 = NULL;
-    char *memLoc2 = NULL;
+    char registerNum[WORD_SIZE];
+    char memLoc1[WORD_SIZE];
+    char memLoc2[WORD_SIZE];
     
     bool tempMemLoc[WORD_SIZE];
     bool instruction[WORD_SIZE];
     
+    zeroBoolArray(WORD_SIZE, instruction);
+    
     startToken(line);
     aToken answer;
     
-    answer = getNextToken();
-    
     int counter = 4;
+    int counter3 = 4;
+    int i = 0;
+    int j = 0;
+    int k = 0;
     
-    while (!doneFlag || counter > 0) {
+    while ((!doneFlag) && counter3 > 0) {
         
-        int i = 0;
-        int j = 0;
+        doneFlag = 0;
+        
+        answer = getNextToken();
+        
+        i = 0;
+        j = 0;
+        k = 0;
         
         expandedToken = strdup(answer.start);
         
@@ -61,37 +70,48 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
             
             case aToken::MEM_LOCATION:
                 while (expandedToken[j] != '=') {
+                    
                     memLoc1[j] = expandedToken[j];
                     j++;
                 }
+                memLoc1[j] = '\0';
                 j++;
                 while (expandedToken[j] != '\n') {
-                    memLoc2[j] = expandedToken[j];
+                    memLoc2[k] = expandedToken[j];
                     j++;
+                    k++;
                 }
+                memLoc2[k] = '\0';
                 
                 if (strcasecmp(memLoc2, "ASM") == 0) {
                     memLocation = atoi(memLoc1);
+                    doneFlag = true;
                     break;
                 }
                 else {
                     intToBoolQuartet(atoi(memLoc2), WORD_SIZE, 1, tempMemLoc);
                     setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
+                    doneFlag = true;
                     break;
                 }
                 
+            case aToken::COMMENT:
             case aToken::EOL:
                 doneFlag = 1;
                 break;
                 
             case aToken::OP_CODE:
+                
+                
                 if (strcasecmp(expandedToken, "MOVE") == 0) {
                     loadValue(instruction, counter, 0, 0, 0, 0);
+                    counter3--;
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "NOT") == 0) {
                     loadValue(instruction, counter, 0, 0, 0, 1);
+                    counter3--;
                     break;
                 }
                 
@@ -127,11 +147,13 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 else if (strcasecmp(expandedToken, "SET") == 0) {
                     loadValue(instruction, counter, 1, 0, 0, 0);
+                    counter3--;
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "SETH") == 0) {
                     loadValue(instruction, counter, 1, 0, 0, 1);
+                    counter3--;
                     break;
                 }
                 
@@ -167,19 +189,20 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 else {
                     //Invalid OP CODE... will handle error later.
+                    break;
                 }
                 
             case aToken::REGISTER:
-                while (expandedToken[i] != ',') {
-                    registerNum[i] = expandedToken[i];
+                while ((expandedToken[i+1] != ',') && (expandedToken[i+1] != '\n')) {
+                    registerNum[i] = expandedToken[i+1];
                     i++;
                 }
-                intToBoolQuartet(atoi(expandedToken), 4, counter, instruction);
+                registerNum[i] = '\0';
+                intToBoolQuartet(atoi(registerNum), 4, counter, instruction);
                 break;
                 
             case aToken::DATA:
                 if (((int) *expandedToken > 15) && counter == 2) {
-                    counter = 1;
                     intToBoolQuartet(atoi(expandedToken), 8, counter, instruction);
                     doneFlag = 1;
                     break;
@@ -202,12 +225,16 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
         
         counter--;
+        counter3--;
         free(expandedToken);
     
     }
+    if (counter3 == 0) {
+        
+        setMemoryBoolArray(memLocation, instruction, memory);
+        memLocation++;
+    }
     
-    setMemoryBoolArray(memLocation, instruction, memory);
-    memLocation++;
     
 }
 

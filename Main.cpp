@@ -22,7 +22,15 @@ int main()
     testFile = fopen("Test.txt", "r");
     loadFile(testFile, memory);
     cout << "Loaded the file." << endl;
-    printMemoryLocation(30, memory);
+    for (int j = 30; j < 50; j++)
+        printMemoryLocation(j, memory);
+    cout << endl << endl;
+    for(int i = 0; i < 16; i++)
+    {
+        printMemoryLocation(i, memory);
+    }
+    cout << endl << endl;
+    
 	/*setMemoryInt(0, 30000, memory);
 	setMemoryInt(1,1, memory);
 	set(0, 42, memory);
@@ -33,23 +41,19 @@ int main()
 	printMemoryLocation(2, memory);
 	cout << "Result of subI: " << boolNtoInt(WORD_SIZE, memory[2]) << endl;*/
 
-    setMemoryInt(0, 0, memory);
+    /*setMemoryInt(0, 0, memory);
     setMemoryInt(1, 1, memory);
     setMemoryInt(2, -1, memory);
-    setMemoryInt(3, 5, memory);
-    for(int i = 0; i < 4; i++)
-    {
-        printMemoryLocation(i, memory);
-    }
-    cout << endl << endl;
-    moveZ(4, 3, 1, memory);
+    setMemoryInt(3, 5, memory);*/
+    
+    /*moveZ(4, 3, 1, memory);
     moveX(5, 3, 0, memory);
     moveP(6, 3, 2, memory);
-    moveN(7, 3, 1, memory);
-    for(int i = 4; i < 8; i++)
+    moveN(7, 3, 1, memory);*/
+    /*for(int i = 4; i < 8; i++)
     {
         printMemoryLocation(i, memory);
-    }
+    }*/
     cout << "Negative flag: " << NEGATIVE_FLAG << endl;
     cout << "Overflow flag: " << OVERFLOW_FLAG << endl;
     
