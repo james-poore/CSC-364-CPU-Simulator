@@ -15,26 +15,9 @@ bool memory [TOTAL_MEM_SIZE] [WORD_SIZE];
 int NEGATIVE_FLAG = 0;
 int OVERFLOW_FLAG = 0;
 
-/* NOTE: Functions go from most significant bit to least significant bit. */
+string currentInstruction = "";
 
-/*
- static const int OP_MOVE  =  0;
- static const int OP_NOT   =  1;
- static const int OP_AND   =  2;
- static const int OP_OR    =  3;
- static const int OP_ADD   =  4;
- static const int OP_SUB   =  5;
- static const int OP_ADDI  =  6;
- static const int OP_SUBI  =  7;
- static const int OP_SET   =  8;
- static const int OP_SETH  =  9;
- static const int OP_INCIZ = 10;
- static const int OP_DECIN = 11;
- static const int OP_MOVEZ = 12;
- static const int OP_MOVEX = 13;
- static const int OP_MOVEP = 14;
- static const int OP_MOVEN = 15;
- */
+/* NOTE: Functions go from most significant bit to least significant bit. */
 
 void runProgram()
 {
