@@ -30,7 +30,7 @@ void move(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 }
 
 /*
- * void not(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * void not_op(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  * Does a bitwise not of regA and stores into regD in the memory array passed.
  */
 void not_op(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
@@ -56,7 +56,7 @@ void not_op(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 }
 
 /* 
- * void and(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * void and_op(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  * Does a bitwise and of regA and regB and stores into regD in the memory array passed.
  */
 void and_op(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
@@ -75,7 +75,7 @@ void and_op(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]
 }
 
 /* 
- * void and(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * void or_op(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  * Does a bitwise or of regA and regB and stores into regD in the memory array passed.
  */
 void or_op(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
@@ -169,14 +169,12 @@ void setH(int regD, int data8, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     bool memoryCopy[WORD_SIZE / 2];
     intToBoolN(data8, WORD_SIZE / 2, memoryCopy);
-    printBoolArray(WORD_SIZE / 2, memoryCopy);
     int j = (WORD_SIZE / 2) - 1;
     for(int i = WORD_SIZE - 1; i >= 0; i--)
     {
         if(i >= WORD_SIZE / 2)
         {
             memory[regD][i] = memoryCopy[j];
-            cout << memoryCopy[j] << endl;
             j--;
         }
     }
@@ -222,7 +220,7 @@ void decIN(int regD, int data4, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]
 void moveZ(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     int result = 1;
-    for(int i = WORD_SIZE -1; i >= 0; i--)
+    for(int i = WORD_SIZE - 1; i >= 0; i--)
     {
         if(memory[regB][i] == 1)
         {
@@ -243,7 +241,7 @@ void moveZ(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 void moveX(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     int result = 0;
-    for(int i = WORD_SIZE -1; i >= 0; i--)
+    for(int i = WORD_SIZE - 1; i >= 0; i--)
     {
         if(memory[regB][i] == 1)
         {

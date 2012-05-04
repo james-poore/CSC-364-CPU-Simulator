@@ -66,6 +66,20 @@ int boolNtoInt(int size, bool word[])
     }
 }
 
+// lengthOfBinaryNumber is eithr 4 or 8.
+// Test for negative numbers.
+int boolQuartetToInt(int size, int lengthOfBinaryNumber, int quartetNum, bool word[])
+{
+    int i = 4 * (quartetNum - 1);
+    int sum = 0;
+    for(int j = 0; j < lengthOfBinaryNumber; j++, i++)
+    {
+        sum += word[i] * pow(2, j);
+    }
+    return sum;
+
+}
+
 /*
  * int overflowTest(int size, bool word[])
  * Tests whether a binary number overflows two's complement (1000 0000 ... 0000).
@@ -294,7 +308,7 @@ void intToBoolN(int number, int size, bool word[])
  * Converts the number to binary and stores it in the given quartet of word.
  * If the number of bits in the binary version of number is smaller than size, then it will be padded with 0's.
  * size refers to the boolean array word.
- * quartetNum should be 1 to start at C0, 2 to start at C3, 3 to start at C7, and 4 to start at C11.
+ * quartetNum should be 1 to start at C0, 2 to start at C4, 3 to start at C8, and 4 to start at C12.
  */
 void intToBoolQuartet(int number, int size, int quartetNum, bool word[])
 {
@@ -351,6 +365,66 @@ void printMemoryLocation(int index, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 		}
 	}
 	cout << endl;
+}
+
+/* 
+ * void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ *
+ */
+void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    int instruction = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]);
+    for(int j = instruction - 2; j < instruction + 3; j++)
+    {
+        cout << j << ": ";
+        /*if(j < 10)
+        {
+            cout << " ";
+        }*/
+        for(int i = WORD_SIZE - 1; i >= 0; i--)
+        {
+            cout << memory[j][i];
+            if(i > 0 && i % 4 == 0)
+            {
+                cout << " ";
+            }
+        }
+        
+        if(j == instruction)
+        {
+            cout << " <----- Instruction to be executed.";
+        }
+        
+        cout << endl;
+    }
+    
+    cout << endl << "Type in e or exit to quit, or hit enter to continue" << endl;
+}
+
+/*
+ * void printRegisters(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Prints the registers.
+ */
+void printRegisters(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    for(int j = 0; j < 16; j++)
+    {
+        cout << j << ": ";
+        if(j < 10)
+        {
+            cout << " ";
+        }
+        for(int i = WORD_SIZE - 1; i >= 0; i--)
+        {
+            cout << memory[j][i];
+            if(i > 0 && i % 4 == 0)
+            {
+                cout << " ";
+            }
+        }
+        
+        cout << " " << boolNtoInt(WORD_SIZE, memory[j]) << endl;
+    }
 }
 
 /*
@@ -428,6 +502,27 @@ void switchSign(int size, bool number[])
 			}
 	}
     bitwiseAddImm(size, number, 1, number); // Add 1 to it.
+}
+
+/*
+ * void waitForEnter()
+ * Waits for the enter key to be pressed before executing the next instruction.
+ * Type in anything with the letter e to exit the program.
+ */
+void waitForEnter()
+{
+    int c;
+    fflush( stdout );
+    do 
+    {
+        c = getchar(); 
+        if(c == 101) // The letter e.
+        {
+            exit(EXIT_SUCCESS);
+        }
+    }
+    while ((c != '\n') && (c != EOF));
+    
 }
 
 /*

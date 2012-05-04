@@ -27,6 +27,8 @@ static const int OP_MOVEX = 13;
 static const int OP_MOVEP = 14;
 static const int OP_MOVEN = 15;
 
+static const int PROGRAM_COUNTER = 15;
+
 static const int TOTAL_MEM_SIZE = 65536; // 2^16;
 static const int TOTAL_VAL_SIZE = TOTAL_MEM_SIZE / 2; // 2^15, max size a number can be (discounting sign bit).
 static const int WORD_SIZE = 16;
