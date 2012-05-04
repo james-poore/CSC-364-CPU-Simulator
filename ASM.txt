@@ -24,4 +24,4 @@ SET R0, 5
 SET R1, 10
 ADD R2, R1, R0
 MOVE R15, R15
->>>>>>> basdf
+>>>>>>>
