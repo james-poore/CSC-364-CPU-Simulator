@@ -53,6 +53,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     int i = 0;
     int j = 0;
     int k = 0;
+    bool setFlag = 0;
     
     while ((!doneFlag) && counter3 > 0) {
         
@@ -148,12 +149,14 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 else if (strcasecmp(expandedToken, "SET") == 0) {
                     loadValue(instruction, counter, 1, 0, 0, 0);
                     counter3--;
+                    setFlag = true;
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "SETH") == 0) {
                     loadValue(instruction, counter, 1, 0, 0, 1);
                     counter3--;
+                    setFlag = true;
                     break;
                 }
                 
@@ -202,13 +205,13 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 break;
                 
             case aToken::DATA:
-                if (((int) *expandedToken > 15) && counter == 2) {
-                    intToBoolQuartet(atoi(expandedToken), 8, counter, instruction);
+                if (setFlag == true && counter == 2) {
+                    intToBoolQuartet(atoi(expandedToken), 8, 1, instruction);
                     doneFlag = 1;
                     break;
                 }
                 
-                else if ((atoi(expandedToken) > 15) && counter != 2) {
+                else if (setFlag == true && counter != 2) {
                     //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
                     break;
                 }
