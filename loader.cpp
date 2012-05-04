@@ -34,6 +34,7 @@ void loadValue(bool instruction[WORD_SIZE], int counter, int a, int b, int c, in
 
 void printError(char errorMessage[100]) {
     std::cout << "Line " << lineNumber << " : " << errorMessage << "\n";
+    exit(EXIT_FAILURE);
 }
 
 void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
@@ -93,7 +94,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 memLoc2[k] = '\0';
                 
-                if ( -32768 < atoi(memLoc2) < 32767 ) {
+                if ( (atoi(memLoc2) > 32767)  || (atoi(memLoc2) < -32768)  ) {
                     printError("Expected value between -32768 and 32767 before ';' ");
                 }
                 
