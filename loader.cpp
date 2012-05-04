@@ -21,14 +21,19 @@
 #define MAX_LINE_LENGTH 500
 
 int memLocation = 0;
+int lineNumber = 1;
 
 void loadValue(bool instruction[WORD_SIZE], int counter, int a, int b, int c, int d) {
     
-    int counter2 = ((counter * 4) -1);
+    int counter2 = ((counter * 4) - 1);
     instruction[counter2] = a;
     instruction[counter2 - 1] = b;
     instruction[counter2 - 2] = c;
     instruction[counter2 - 3] = d;
+}
+
+void printError(char errorMessage[100]) {
+    std::cout << "Line " << lineNumber << " : " << errorMessage << "\n";
 }
 
 void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
@@ -76,6 +81,10 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     j++;
                 }
                 memLoc1[j] = '\0';
+                
+                if ( atoi(memLoc1) > 65535 ) {
+                    printError("Expected value less than 65535 before '=' ");
+                }
                 j++;
                 while (expandedToken[j] != '\n') {
                     memLoc2[k] = expandedToken[j];
@@ -83,6 +92,10 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     k++;
                 }
                 memLoc2[k] = '\0';
+                
+                if ( -32768 < atoi(memLoc2) < 32767 ) {
+                    printError("Expected value between -32768 and 32767 before ';' ");
+                }
                 
                 if (strcasecmp(memLoc2, "ASM") == 0) {
                     memLocation = atoi(memLoc1);
@@ -247,7 +260,8 @@ int loadFile(FILE *file, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     while (fgets(line, MAX_LINE_LENGTH + 1, file) != NULL) {
         
-        processLine(line, memory);  
+        processLine(line, memory);
+        lineNumber++;
         
     }
     
