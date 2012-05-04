@@ -5,10 +5,14 @@
  */ 
 
 #ifndef CONSTS_H_INCLUDED // include guard, ensures that the header file is only included once in each compilation unit. 
-#define CONSTS_H_INCLUDED	
+#define CONSTS_H_INCLUDED
+
+using namespace std;
 
 extern int NEGATIVE_FLAG;
 extern int OVERFLOW_FLAG;
+
+extern string currentInstruction;
 
 static const int OP_MOVE  =  0;
 static const int OP_NOT   =  1;

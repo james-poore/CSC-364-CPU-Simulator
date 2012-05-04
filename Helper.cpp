@@ -376,6 +376,10 @@ void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
     int instruction = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]);
     for(int j = instruction - 2; j < instruction + 3; j++)
     {
+        if(j > 0)
+        {
+            continue;
+        }
         cout << j << ": ";
         /*if(j < 10)
         {
