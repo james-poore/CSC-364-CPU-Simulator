@@ -23,10 +23,13 @@ using namespace std;
  */
 void move(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
+    //cerr << regD << " " << regA << endl;
 	for(int i = WORD_SIZE - 1; i >= 0; i--)
 	{
 		memory[regD][i] = memory[regA][i];
+        //cerr << memory[regA][i];
 	}
+    //cerr << endl;
 }
 
 /*

@@ -27,11 +27,7 @@ void runProgram()
     {
         int programLocation = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]);
         int endOfProgram = 0;
-        //cout << "Program Location is: " << programLocation << endl;
-        // memory size, word size, quartet, memory
         int opCode = boolQuartetToInt(WORD_SIZE, 4, 4, memory[programLocation]);
-        //cout << "Op code is: " << opCode << endl;
-        //stringstream ins;
         switch(opCode)
         {
             case OP_MOVE:
@@ -182,10 +178,6 @@ void runProgram()
             }
         }
         
-        //currentInstruction = ins.str();
-        //cout << "PC at end of loop: " << boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]) << endl;
-        //cout << "EndOfProgram: " << endOfProgram << endl;
-        // If the program counter hasn't been changed by an operation, increase it by one.
         if(programLocation == boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]) && endOfProgram == 0)
         {
             programLocation += 1;
@@ -195,6 +187,7 @@ void runProgram()
         printRegisters(memory);
         cout << endl;
         printProgramCounterMemory(memory);
+        
         // Wait for the user to press enter before moving on to the next instruction.
         waitForEnter();
     }
@@ -204,39 +197,8 @@ void runProgram()
 // When a move on a negative number is done, both end up positive...
 int main(int argc, char* argv[])
 {
-    /*int code = atoi(argv[1]);
-    setMemoryInt(1, 0, memory);
-    setMemoryInt(2, 15, memory);
-    setMemoryInt(3, -1, memory);
-    intToBoolQuartet(code, WORD_SIZE / 4, 4, memory[16]);
-    intToBoolQuartet(1, WORD_SIZE / 4, 3, memory[16]);
-    intToBoolQuartet(2, WORD_SIZE / 4, 2, memory[16]);
-    intToBoolQuartet(3, WORD_SIZE / 4, 1, memory[16]);
-    //printMemoryLocation(0, memory);
-    //printMemoryLocation(1, memory);
-    //printMemoryLocation(2, memory);
-    //printMemoryLocation(3, memory);
-     
-    setMemoryInt(15, 16, memory); // Sets PC
-    system("clear");
-    printRegisters(memory);
-    cout << endl;
-    printProgramCounterMemory(memory);
-    waitForEnter();
-    runProgram();
-    printMemoryLocation(0, memory);
-    printMemoryLocation(1, memory);
-    printMemoryLocation(2, memory);
-    printMemoryLocation(3, memory);
-    
-    setMemoryInt(15, 40000, memory);
-    printMemoryLocation(15, memory);
-    int test = boolNtoInt(WORD_SIZE, memory[15]);
-    cout << test << endl;
-    */
-    
     FILE * testFile;
-    testFile = fopen("ASM.txt", "r");
+    testFile = fopen(argv[1], "r");
     loadFile(testFile, memory);
     //cout << "Loaded the file." << endl;
     /*for (int j = 100; j < 110; j++)

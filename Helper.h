@@ -15,6 +15,8 @@ int overflowTest(int size, bool word[]);
 void bitwiseAdd(int sizeA, bool wordA[], int sizeB, bool wordB[], bool result[]);
 void bitwiseAddImm(int sizeA, bool wordA[], int addImm, bool result[]);
 void bitwiseNot(int size, bool word[], bool result[]);
+void calculateInstructionStrings(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
+void copyBooleanArray(bool src[], bool dest[]);
 void intToBoolN(int number, int size, bool word[]);
 void intToBoolQuartet(int number, int size, int quartetNum, bool word[]);
 void printBoolArray(int size, bool word[]);

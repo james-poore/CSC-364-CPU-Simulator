@@ -15,7 +15,8 @@
 using namespace std;
 
 /* TODO: Test whether boolN sets negative #s sign bit correctly.
-         Comment bitwiseAdd and bitwiseAddImm */
+         Comment bitwiseAdd and bitwiseAddImm
+         Test boolNtoInt negative overflow */
 
 /*
  * int boolNtoInt(int size, bool word[])
@@ -49,18 +50,23 @@ int boolNtoInt(int size, bool word[])
             i--;
         }*/
         int overflow = overflowTest(size, word);
-        
+        bool test[WORD_SIZE];
+        zeroBoolArray(WORD_SIZE, test);
+        copyBooleanArray(word, test);
         if(overflow == 0) // If the number is not an overflow number, proceed as normal.
         {
-            switchSign(size, word);
+            /*switchSign(size, word);
             sum = boolNtoInt(size, word);
+            return -sum;*/
+            switchSign(size, test);
+            sum = boolNtoInt(size, test);
             return -sum;
         }
         else // Otherwise, do a bitwise not on the number and set the overflow flag.
         {
             OVERFLOW_FLAG = 1;
-            bitwiseNot(size, word, word);
-            sum = boolNtoInt(size, word);
+            bitwiseNot(size, test, test);
+            sum = boolNtoInt(size, test);
             return sum;
         }
     }
@@ -390,6 +396,18 @@ void calculateInstructionStrings(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 }
 
 /*
+ * void copyBooleanArray(bool src[], bool dest[])
+ * Copies the source array into the destination array.
+ */
+void copyBooleanArray(bool src[], bool dest[])
+{
+    for(int i = WORD_SIZE; i >= 0; i--)
+    {
+        dest[i] = src[i];
+    }
+}
+
+/*
  * void printBoolArray(int size, bool word[])
  * Prints the given binary number (in the bool array).  
  * size refers to the size of the boolean array.
@@ -548,7 +566,7 @@ void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
         
         if(j == instruction)
         {
-            cout << " <----- Instruction to be executed.";
+            cout << " \t\t\t<----- Instruction to be executed.";
         }
         
         cout << endl;
