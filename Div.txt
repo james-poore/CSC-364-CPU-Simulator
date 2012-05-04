@@ -1,4 +1,9 @@
+<<<<<<< HEAD:Div.txt
 #1=17
+=======
+<<<<<<< HEAD
+#1=20
+>>>>>>> 9e3e1aea49f6ae645ca94b12d2012ec16e73ba60:ASM.txt
 #2=5
 #100=ASM
 SET R3, 0
@@ -16,3 +21,11 @@ ADDI R3, R3, 1
 SUBI R15, R15, 4
 MOVE R4, R1
 MOVE R15, R15 // END OF PROGRAM
+=======
+#1=3
+#10=ASM
+SET R0, 5
+SET R1, 10
+ADD R2, R1, R0
+MOVE R15, R15
+>>>>>>>
