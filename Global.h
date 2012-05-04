@@ -13,6 +13,7 @@ extern int NEGATIVE_FLAG;
 extern int OVERFLOW_FLAG;
 
 extern string currentInstruction;
+extern string currentInstructionArray[5];
 
 static const int OP_MOVE  =  0;
 static const int OP_NOT   =  1;

@@ -5,8 +5,8 @@
  */ 
 
 #include <iostream>
-
 #include <math.h>
+#include <sstream>
 
 #include "CPUFunctions.h"
 #include "Global.h"
@@ -241,6 +241,155 @@ void bitwiseNot(int size, bool word[], bool result[])
 }
 
 /*
+ 
+ */
+void calculateInstructionStrings(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    int programLocation = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]);
+    int j = programLocation - 2;
+    for(int i = 0; j <= programLocation + 2; i++, j++)
+    {
+        if(j < 0)
+        {
+            currentInstructionArray[i] = "";
+            continue;
+        }
+        int opCode = boolQuartetToInt(WORD_SIZE, 4, 4, memory[j]);
+        stringstream ins;
+        switch(opCode)
+        {
+            case OP_MOVE:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                ins << "MOVE R" << regD << ", R" << regA;
+                break;
+            }
+            case OP_NOT:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                ins << "NOT R" << regD << ", R" << regA;
+                break;
+            }
+            case OP_AND:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "AND R" << regD << ", R" << regA << ", R" << regB;
+                break;
+            }
+            case OP_OR:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "OR R" << regD << ", R" << regA << ", R" << regB;
+                break;
+            }
+            case OP_ADD:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "ADD R" << regD << ", R" << regA << ", R" << regB;
+                break;
+            }
+            case OP_SUB:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "SUB R" << regD << ", R" << regA << ", R" << regB;
+                break;
+            }
+            case OP_ADDI:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "ADDI R" << regD << ", R" << regA << ", " << data;
+                break;
+            }
+            case OP_SUBI:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "SUBI R" << regD << ", R" << regA << ", " << data;
+                break;
+            }
+            case OP_SET:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 2, 1, memory[j]);
+                ins << "SET R" << regD << ", " << data;
+                break;
+            }
+            case OP_SETH:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 2, 1, memory[j]);
+                ins << "SETH R" << regD << ", " << data;
+                break;
+            }
+            case OP_INCIZ:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "INCIZ R" << regD << ", " << data << ", R" << regB;
+                break;
+            }
+            case OP_DECIN:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "DECIN R" << regD << ", " << data << ", R" << regB;
+                break;
+            }
+            case OP_MOVEZ:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "MOVEZ R" << regD << ", R" << regA << ", R" << regB;
+                break;
+            }
+            case OP_MOVEX:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "MOVEX R" << regD << ", R" << regA << ", R" << regB;
+                break;
+            }
+            case OP_MOVEP:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "MOVEP R" << regD << ", R" << regA << ", R" << regB;
+                break;
+            }
+            case OP_MOVEN:
+            {
+                int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[j]);
+                int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[j]);
+                int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[j]);
+                ins << "MOVEN R" << regD << ", R" << regA << ", R" << regB;
+                break;
+            }
+        }
+        
+        currentInstructionArray[i] = ins.str();
+        ins.flush();
+    }
+}
+
+/*
  * void printBoolArray(int size, bool word[])
  * Prints the given binary number (in the bool array).  
  * size refers to the size of the boolean array.
@@ -374,9 +523,10 @@ void printMemoryLocation(int index, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     int instruction = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]);
-    for(int j = instruction - 2; j < instruction + 3; j++)
+    calculateInstructionStrings(memory);
+    for(int k = 0, j = instruction - 2; j < instruction + 3; k++, j++)
     {
-        if(j > 0)
+        if(j < 0)
         {
             continue;
         }
@@ -393,6 +543,8 @@ void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
                 cout << " ";
             }
         }
+        
+        cout << " " << k << ": " << currentInstructionArray[k];
         
         if(j == instruction)
         {
