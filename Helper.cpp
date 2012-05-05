@@ -14,11 +14,6 @@
 
 using namespace std;
 
-/* TODO: 
- Test whether boolN deals with overflow the way I want it to. 
- Test whether boolQuartetToInt deals with negative numbers correctly.
- */
-
 /*
  * int boolNtoInt(int size, bool word[])
  * Converts the binary number (in the bool array) to an int.
@@ -79,7 +74,6 @@ int boolQuartetToInt(int size, int lengthOfBinaryNumber, int quartetNum, bool wo
         sum += word[i] * pow(2, j);
     }
     return sum;
-
 }
 
 /*
@@ -566,6 +560,20 @@ void printRegisters(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
         
         cout << " " << boolNtoInt(WORD_SIZE, memory[j]) << endl; // Print out the decimal version.
     }
+}
+
+/*
+ * void printUserDisplay(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Calls the functions to print everything to the screen for the user.
+ */
+void printUserDisplay(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    system("clear"); // Clear the screen and print the registers and the section of memory around the instruction pointed to by the program counter.
+    printRegisters(memory);
+    cout << endl;
+    printProgramCounterMemory(memory);
+    cout << endl;
+    cout << "Overflow Flag: " << OVERFLOW_FLAG << endl;
 }
 
 /*

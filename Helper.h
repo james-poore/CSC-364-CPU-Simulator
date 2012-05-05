@@ -23,6 +23,7 @@ void printBoolArray(int size, bool word[]);
 void printMemoryLocation(int index, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 void printRegisters(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
+void printUserDisplay(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 void setMemoryBoolArray(int location, bool number[WORD_SIZE], bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 void setMemoryInt(int location, int number, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 void switchSign(int size, bool number[]);
