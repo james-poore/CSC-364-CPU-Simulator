@@ -13,10 +13,11 @@ using namespace std;
 
 bool memory [TOTAL_MEM_SIZE] [WORD_SIZE]; 
 
+int PROG_LOC = 0;
+
 int NEGATIVE_FLAG = 0;
 int OVERFLOW_FLAG = 0;
 
-string currentInstruction = "";
 string currentInstructionArray[5];
 
 /* NOTE: Functions go from most significant bit to least significant bit. */
@@ -25,19 +26,19 @@ void runProgram()
 {
     while(true)
     {
-        int programLocation = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]);
-        int endOfProgram = 0;
-        int opCode = boolQuartetToInt(WORD_SIZE, 4, 4, memory[programLocation]);
-        switch(opCode)
+        int programLocation = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]); // Get the current instruction location.
+        PROG_LOC = programLocation;
+        int endOfProgram = 0; // Whether or not this instruction is MOVE R15, R15.
+        int opCode = boolQuartetToInt(WORD_SIZE, 4, 4, memory[programLocation]); // Get the op code.
+        switch(opCode) // Based on the op code, get the rest of the needed values and do the appropriate instruction.
         {
             case OP_MOVE:
             {
                 int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[programLocation]);
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 move(regD, regA, memory);
-                //ins << "MOVE R" << regD << ", R" << regA;
-                // MOVE R15, R15
-                // If this is the command, this signifies the end of program and it should loop at this point.
+                
+                // If the command is MOVE R15, R15, this signifies the end of program and it should stop going forward at this point.
                 if(regD == PROGRAM_COUNTER && regA == PROGRAM_COUNTER)
                 {
                     endOfProgram = 1;
@@ -49,7 +50,6 @@ void runProgram()
                 int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[programLocation]);
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 not_op(regD, regA, memory);
-                //ins << "NOT R" << regD << ", R" << regA;
                 break;
             }
             case OP_AND:
@@ -58,7 +58,6 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 and_op(regD, regA, regB, memory);
-                //ins << "AND R" << regD << ", R" << regA << ", R" << regB;
                 break;
             }
             case OP_OR:
@@ -67,7 +66,6 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 or_op(regD, regA, regB, memory);
-                //ins << "OR R" << regD << ", R" << regA << ", R" << regB;
                 break;
             }
             case OP_ADD:
@@ -76,7 +74,6 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 add(regD, regA, regB, memory);
-                //ins << "ADD R" << regD << ", R" << regA << ", R" << regB;
                 break;
             }
             case OP_SUB:
@@ -85,7 +82,6 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 sub(regD, regA, regB, memory);
-                //ins << "SUB R" << regD << ", R" << regA << ", R" << regB;
                 break;
             }
             case OP_ADDI:
@@ -94,7 +90,6 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 addI(regD, regA, data, memory);
-                //ins << "ADDI R" << regD << ", R" << regA << ", " << data;
                 break;
             }
             case OP_SUBI:
@@ -103,7 +98,6 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 subI(regD, regA, data, memory);
-                //ins << "SUBI R" << regD << ", R" << regA << ", " << data;
                 break;
             }
             case OP_SET:
@@ -111,7 +105,6 @@ void runProgram()
                 int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[programLocation]);
                 int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 2, 1, memory[programLocation]);
                 set(regD, data, memory);
-                //ins << "SET R" << regD << ", " << data;
                 break;
             }
             case OP_SETH:
@@ -119,7 +112,6 @@ void runProgram()
                 int regD = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[programLocation]);
                 int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 2, 1, memory[programLocation]);
                 setH(regD, data, memory);
-                //ins << "SETH R" << regD << ", " << data;
                 break;
             }
             case OP_INCIZ:
@@ -128,7 +120,6 @@ void runProgram()
                 int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 incIZ(regD, data, regB, memory);
-                //ins << "INCIZ R" << regD << ", " << data << ", R" << regB;
                 break;
             }
             case OP_DECIN:
@@ -137,7 +128,6 @@ void runProgram()
                 int data = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 decIN(regD, data, regB, memory);
-                //ins << "DECIN R" << regD << ", " << data << ", R" << regB;
                 break;
             }
             case OP_MOVEZ:
@@ -146,7 +136,6 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 moveZ(regD, regA, regB, memory);
-                //ins << "MOVEZ R" << regD << ", R" << regA << ", R" << regB;
                 break;
             }
             case OP_MOVEX:
@@ -155,7 +144,6 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 moveX(regD, regA, regB, memory);
-                //ins << "MOVEX R" << regD << ", R" << regA << ", R" << regB;
                 break;
             }
             case OP_MOVEP:
@@ -164,7 +152,6 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 moveP(regD, regA, regB, memory);
-                //ins << "MOVEP R" << regD << ", R" << regA << ", R" << regB;
                 break;
             }
             case OP_MOVEN:
@@ -173,20 +160,25 @@ void runProgram()
                 int regA = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 2, memory[programLocation]);
                 int regB = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 1, memory[programLocation]);
                 moveN(regD, regA, regB, memory);
-                //ins << "MOVEN R" << regD << ", R" << regA << ", R" << regB;
                 break;
             }
         }
         
+        // If the program counter was not changed as part of an instruction, and if the instruction is not MOVE R15, R15, then increase the program counter by 1.
         if(programLocation == boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]) && endOfProgram == 0)
         {
             programLocation += 1;
             setMemoryInt(PROGRAM_COUNTER, programLocation, memory);
         }
+        
+        // Clear the screen and print the registers and the section of memory around the instruction pointed to by the program counter..
         system("clear");
         printRegisters(memory);
         cout << endl;
         printProgramCounterMemory(memory);
+        cout << endl;
+        cout << "Overflow Flag: " << OVERFLOW_FLAG << endl;
+        
         
         // Wait for the user to press enter before moving on to the next instruction.
         waitForEnter();
@@ -214,6 +206,8 @@ int main(int argc, char* argv[])
     printRegisters(memory);
     cout << endl;
     printProgramCounterMemory(memory);
+    cout << endl;
+    cout << "Overflow Flag: " << OVERFLOW_FLAG << endl;
     waitForEnter();
     runProgram();
     

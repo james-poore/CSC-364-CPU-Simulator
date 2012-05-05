@@ -2,7 +2,7 @@
 #1=4
 #100=ASM
 SET R2, 0
-ADDI R5, R15, 10 // Doesn't work with data > 9
+ADDI R5, R15, 8 // Doesn't work with data > 9
 SUB R4, R2, R1
 MOVEN R1, R4, R1
 SUB R4, R2, R0
