@@ -150,6 +150,18 @@ string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
     return result;
 }
 
+int hexToInt(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    int hexNum = 0;
+    string result = "";
+    
+    stringstream ss; // Converts the hex string to an int.
+    ss << hex << hexString.substr(2, hexString.size() - 2);
+    ss >> hexNum;
+    
+    return hexNum;
+}
+
 /*
  * void bitwiseAdd(int sizeA, bool wordA[], int sizeB, bool wordB[], bool result[])
  * Takes two binary numbers and bitwise adds them and stores into result.

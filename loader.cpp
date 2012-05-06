@@ -80,21 +80,24 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
             
             case aToken::MEM_LOCATION:
                 while (expandedToken[j] != '=') {
-                    
                     memLoc1[j] = expandedToken[j];
                     j++;
                 }
+                
                 memLoc1[j] = '\0';
                 
                 if ( atoi(memLoc1) > 65535 ) {
                     printError("Expected value less than 65535 before '=' ");
                 }
+                
                 j++;
+                
                 while (expandedToken[j] != '\n') {
                     memLoc2[k] = expandedToken[j];
                     j++;
                     k++;
                 }
+                
                 memLoc2[k] = '\0';
                 
                 if ( (atoi(memLoc2) > 32767)  || (atoi(memLoc2) < -32768)  ) {
@@ -239,10 +242,37 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
             case aToken::BINARY:
+                if (setFlag == true && counter == 2) {
+                    
+                    break;
+                }
                 
+                else if (setFlag == true && counter != 2) {
+                    //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
+                    break;
+                }
                 
+                else {
+                    
+                    break;
+                }
                 
             case aToken::HEX:
+                if (setFlag == true && counter == 2) {
+                     = hexToString(expandedToken, memory);
+                    void intToBoolQuartet(int number, int size, int quartetNum, bool word[]
+                    break;
+                }
+                
+                else if (setFlag == true && counter != 2) {
+                    //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
+                    break;
+                }
+                
+                else {
+                    
+                    break;
+                }
                 
             default:
                 //Invalid instruction...will handle error later.

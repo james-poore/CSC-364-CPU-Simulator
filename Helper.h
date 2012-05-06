@@ -18,6 +18,7 @@ int overflowTest(int size, bool word[]);
 
 string binaryToString(string binaryString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
+int hexToInt(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 
 // Functions that return nothing.
 void bitwiseAdd(int sizeA, bool wordA[], int sizeB, bool wordB[], bool result[]);
