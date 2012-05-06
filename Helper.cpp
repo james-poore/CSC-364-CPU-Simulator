@@ -7,6 +7,7 @@
 #include <iostream>
 #include <math.h>
 #include <sstream>
+#include <stdlib.h>
 
 #include "CPUFunctions.h"
 #include "Global.h"
@@ -122,9 +123,15 @@ string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
     {
         sum += 
     }*/
-    int hex = 0;
+    int hexNum = 0;
+    string result = "";
     stringstream ss;
-    ss << hex << 
+    ss << hex << hexString.substr(2, hexString.size() - 2);
+    ss >> hexNum;
+    stringstream sss;
+    sss << hexNum;
+    result = sss.str();
+    return result;
 }
 
 /*
