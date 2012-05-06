@@ -527,9 +527,18 @@ void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
         
         cout << " " << currentInstructionArray[k]; // Print out the English version
         
+        
+        
         if(j == instruction)
         {
-            cout << " \t\t\t<----- Instruction to be executed."; // If this line is the current instruction, print out a note.
+            int amountOfSpace = 25;
+            int stringSize = currentInstructionArray[k].size();
+            int amountToPrint = amountOfSpace - stringSize;
+            for(int i = 0; i < amountToPrint; i++)
+            {
+                cout << " ";
+            }
+            cout << "<----- Instruction to be executed."; // If this line is the current instruction, print out a note.
         }
         
         cout << endl;
