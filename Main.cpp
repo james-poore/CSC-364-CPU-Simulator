@@ -177,7 +177,7 @@ void runProgram()
         }
         
         // If the program counter was not changed as part of an instruction, and if the instruction is not MOVE R15, R15, then increase the program counter by 1.
-        if(programLocation == boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]) && endOfProgram == 0)
+        if(programLocation == boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]) && endOfProgram == 0 && programLocation < TOTAL_MEM_SIZE)
         {
             programLocation += 1;
             setMemoryInt(PROGRAM_COUNTER, programLocation, memory);

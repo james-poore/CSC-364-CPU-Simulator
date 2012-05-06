@@ -57,7 +57,7 @@ aToken getNextToken()
     }
     
     // Find the first non-white space
-    while (*currTokPos == (' ')
+    while (*currTokPos == (' '))
         currTokPos++;
     
     switch (*currTokPos)
