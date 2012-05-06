@@ -435,6 +435,10 @@ void copyBooleanArray(bool src[], bool dest[])
     }
 }
 
+/*
+ * void copyBooleanArrayQuartet(bool src[], bool dest[], int size, int quartetNum)
+ * Copies the source array into the destination array's quartet.
+ */
 void copyBooleanArrayQuartet(bool src[], bool dest[], int size, int quartetNum)
 {
     int i = 4 * (quartetNum - 1);
