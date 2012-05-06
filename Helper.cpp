@@ -442,7 +442,7 @@ void copyBooleanArray(bool src[], bool dest[])
 void copyBooleanArrayQuartet(bool src[], bool dest[], int size, int quartetNum)
 {
     int i = 4 * (quartetNum - 1);
-    for(int j = 0; j < size; j++, i++)
+    for(int j = (size - 1); j >= 0; j--, i++)
     {
         dest[i] = src[j];
     }
