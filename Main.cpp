@@ -195,6 +195,7 @@ int main(int argc, char* argv[])
     testFile = fopen(argv[1], "r");
     loadFile(testFile, memory);
     
+
     printUserDisplay(memory); // Prints everything that the user needs to see to the screen.
     waitForEnter(); // Wait for the user to press enter before moving on to the next instruction.
     runProgram(); // Execute the program.

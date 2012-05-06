@@ -16,6 +16,7 @@ int getProgramCounter(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 
 int overflowTest(int size, bool word[]);
 
+string binaryToString(string binaryString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 
 // Functions that return nothing.

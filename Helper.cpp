@@ -117,6 +117,21 @@ int overflowTest(int size, bool word[])
 
 /*
  * string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Converts a string in binary, 0b(0, 1)+, into a string with the equivalent int value.
+ */
+string binaryToString(string binaryString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    binaryString = binaryString.substr(2, binaryString.size() - 2); // Takes off the 0b.
+    long int subResult = strtol(binaryString.c_str(), NULL, 2); // Converts it to an int.
+    
+    stringstream ss; // Converts the int into a string.
+    ss << subResult;
+    string result = ss.str();
+    return result;
+}
+
+/*
+ * string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  * Converts a string in hex, 0x(0..F)+, into a string with the equivalent int value.
  */
 string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
