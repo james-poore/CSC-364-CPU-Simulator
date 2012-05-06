@@ -121,13 +121,27 @@ int overflowTest(int size, bool word[])
  */
 string binaryToString(string binaryString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    binaryString = binaryString.substr(2, binaryString.size() - 2); // Takes off the 0b.
+    //binaryString = binaryString.substr(2, binaryString.size() - 2); // Takes off the 0b.
     long int subResult = strtol(binaryString.c_str(), NULL, 2); // Converts it to an int.
     
     stringstream ss; // Converts the int into a string.
     ss << subResult;
     string result = ss.str();
     return result;
+}
+
+/*
+ * string hexToInt(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Converts a string in binary, 0b(0, 1)+, into an int with equivalent value.
+ */
+int binaryToInt(string binaryString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    //binaryString = binaryString.substr(2, binaryString.size() - 2); // Takes off the 0b.
+    long int subResult = strtol(binaryString.c_str(), NULL, 2); // Converts it to an int.
+    
+    stringstream ss; // Converts the int into a string.
+    ss << subResult;
+    return subResult;
 }
 
 /*
@@ -140,7 +154,7 @@ string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
     string result = "";
     
     stringstream ss; // Converts the hex string to an int.
-    ss << hex << hexString.substr(2, hexString.size() - 2);
+    ss << hex << hexString; //hexString.substr(2, hexString.size() - 2);
     ss >> hexNum;
     
     stringstream sss; // Converts the int back into a string.
@@ -150,13 +164,17 @@ string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
     return result;
 }
 
+/*
+ * string hexToInt(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Converts a string in hex, 0x(0..F)+, into an int with equivalent value.
+ */
 int hexToInt(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     int hexNum = 0;
     string result = "";
     
     stringstream ss; // Converts the hex string to an int.
-    ss << hex << hexString.substr(2, hexString.size() - 2);
+    ss << hex << hexString; //hexString.substr(2, hexString.size() - 2);
     ss >> hexNum;
     
     return hexNum;

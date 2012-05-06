@@ -243,7 +243,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
             case aToken::BINARY:
                 if (setFlag == true && counter == 2) {
-                    
+                    intToBoolQuartet(binaryToInt(expandedToken, memory), 8, 1, instruction);
                     break;
                 }
                 
@@ -253,14 +253,13 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
                 else {
-                    
+                    intToBoolQuartet(binaryToInt(expandedToken, memory), 4, counter, instruction);
                     break;
                 }
                 
             case aToken::HEX:
                 if (setFlag == true && counter == 2) {
-                     = hexToString(expandedToken, memory);
-                    void intToBoolQuartet(int number, int size, int quartetNum, bool word[]
+                    intToBoolQuartet(hexToInt(expandedToken, memory), 8, 1, instruction);
                     break;
                 }
                 
@@ -270,7 +269,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
                 else {
-                    
+                    intToBoolQuartet(hexToInt(expandedToken, memory), 4, counter, instruction);
                     break;
                 }
                 
