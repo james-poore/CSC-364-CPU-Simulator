@@ -19,6 +19,7 @@
 #include "Global.h"
 
 #define MAX_LINE_LENGTH 500
+#define PC 15
 
 int memLocation = 0;
 int lineNumber = 1;
@@ -47,6 +48,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     char memLoc2[WORD_SIZE];
     
     bool tempMemLoc[WORD_SIZE];
+    bool programCounter[WORD_SIZE];
     bool instruction[WORD_SIZE];
     
     zeroBoolArray(WORD_SIZE, instruction);
@@ -100,6 +102,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 if (strcasecmp(memLoc2, "ASM") == 0) {
                     memLocation = atoi(memLoc1);
+                    setMemoryInt(PC, memLocation, memory);
                     doneFlag = true;
                     break;
                 }
