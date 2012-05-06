@@ -115,22 +115,23 @@ int overflowTest(int size, bool word[])
     return overflowTest;
 }
 
+/*
+ * string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Converts a string in hex, 0x(0..F)+, into a string with the equivalent int value.
+ */
 string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    /*int length = hexString.size() - 2;
-    int sum = 0;
-    for(int i = 2; i < length; i++)
-    {
-        sum += 
-    }*/
     int hexNum = 0;
     string result = "";
-    stringstream ss;
+    
+    stringstream ss; // Converts the hex string to an int.
     ss << hex << hexString.substr(2, hexString.size() - 2);
     ss >> hexNum;
-    stringstream sss;
+    
+    stringstream sss; // Converts the int back into a string.
     sss << hexNum;
     result = sss.str();
+    
     return result;
 }
 
