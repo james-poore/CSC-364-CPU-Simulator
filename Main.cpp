@@ -196,6 +196,10 @@ int main(int argc, char* argv[])
     loadFile(testFile, memory);
     
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    //setMemoryInt(15, 95, memory); /*** loadFile doesn't actually set PC just yet, so manually set it. ***/
+>>>>>>> 5881cdca4aa0a41803d8f67a30729caacab7a9d7
 =======
     //setMemoryInt(15, 95, memory); /*** loadFile doesn't actually set PC just yet, so manually set it. ***/
 >>>>>>> 5881cdca4aa0a41803d8f67a30729caacab7a9d7
