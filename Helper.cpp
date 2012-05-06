@@ -7,6 +7,7 @@
 #include <iostream>
 #include <math.h>
 #include <sstream>
+#include <stdlib.h>
 
 #include "CPUFunctions.h"
 #include "Global.h"
@@ -114,17 +115,24 @@ int overflowTest(int size, bool word[])
     return overflowTest;
 }
 
+/*
+ * string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Converts a string in hex, 0x(0..F)+, into a string with the equivalent int value.
+ */
 string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    /*int length = hexString.size() - 2;
-    int sum = 0;
-    for(int i = 2; i < length; i++)
-    {
-        sum += 
-    }*/
-    int hex = 0;
-    stringstream ss;
-    ss << hex << 
+    int hexNum = 0;
+    string result = "";
+    
+    stringstream ss; // Converts the hex string to an int.
+    ss << hex << hexString.substr(2, hexString.size() - 2);
+    ss >> hexNum;
+    
+    stringstream sss; // Converts the int back into a string.
+    sss << hexNum;
+    result = sss.str();
+    
+    return result;
 }
 
 /*
@@ -427,6 +435,10 @@ void copyBooleanArray(bool src[], bool dest[])
     }
 }
 
+/*
+ * void copyBooleanArrayQuartet(bool src[], bool dest[], int size, int quartetNum)
+ * Copies the source array into the destination array's quartet.
+ */
 void copyBooleanArrayQuartet(bool src[], bool dest[], int size, int quartetNum)
 {
     int i = 4 * (quartetNum - 1);
