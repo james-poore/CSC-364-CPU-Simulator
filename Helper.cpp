@@ -114,6 +114,19 @@ int overflowTest(int size, bool word[])
     return overflowTest;
 }
 
+string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    /*int length = hexString.size() - 2;
+    int sum = 0;
+    for(int i = 2; i < length; i++)
+    {
+        sum += 
+    }*/
+    int hex = 0;
+    stringstream ss;
+    ss << hex << 
+}
+
 /*
  * void bitwiseAdd(int sizeA, bool wordA[], int sizeB, bool wordB[], bool result[])
  * Takes two binary numbers and bitwise adds them and stores into result.
@@ -411,6 +424,15 @@ void copyBooleanArray(bool src[], bool dest[])
     for(int i = WORD_SIZE; i >= 0; i--)
     {
         dest[i] = src[i];
+    }
+}
+
+void copyBooleanArrayQuartet(bool src[], bool dest[], int size, int quartetNum)
+{
+    int i = 4 * (quartetNum - 1);
+    for(int j = 0; j < size; j++, i++)
+    {
+        dest[i] = src[j];
     }
 }
 

@@ -16,6 +16,8 @@ int getProgramCounter(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 
 int overflowTest(int size, bool word[]);
 
+string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
+
 // Functions that return nothing.
 void bitwiseAdd(int sizeA, bool wordA[], int sizeB, bool wordB[], bool result[]);
 void bitwiseAddImm(int sizeA, bool wordA[], int addImm, bool result[]);
@@ -23,6 +25,7 @@ void bitwiseNot(int size, bool word[], bool result[]);
 
 void calculateInstructionStrings(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 void copyBooleanArray(bool src[], bool dest[]);
+void copyBooleanArrayQuartet(bool src[], bool dest[], int size, int quartetNum);
 
 void intToBoolN(int number, int size, bool word[]);
 void intToBoolQuartet(int number, int size, int quartetNum, bool word[]);
