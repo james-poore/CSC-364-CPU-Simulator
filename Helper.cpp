@@ -77,6 +77,20 @@ int boolQuartetToInt(int size, int lengthOfBinaryNumber, int quartetNum, bool wo
 }
 
 /*
+ * int getProgramCounter(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Returns the value of the program counter, which will range from 0 to TOTAL_MEM_SIZE - 1.
+ */
+int getProgramCounter(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    int sum = 0;
+    for(int i = WORD_SIZE - 1; i >= 0; i--)
+    {
+        sum += memory[PROGRAM_COUNTER][i] * pow(2, i); 
+    }
+    return sum;
+}
+
+/*
  * int overflowTest(int size, bool word[])
  * Tests whether a binary number overflows two's complement (1000 0000 ... 0000).
  * size refers to the size of the boolean array.
@@ -244,7 +258,7 @@ void bitwiseNot(int size, bool word[], bool result[])
  */
 void calculateInstructionStrings(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    int programLocation = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]); // The instruction that is at the location specificed by the program counter.
+    int programLocation = getProgramCounter(memory); // The instruction that is at the location specificed by the program counter.
     int j = programLocation - 2; // Start at 2 before it
     for(int i = 0; j <= programLocation + 2; i++, j++) // Go until 2 after it.
     {
@@ -507,7 +521,7 @@ void printMemoryLocation(int index, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  */
 void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    int instruction = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]); // Get the current instruction location.
+    int instruction = getProgramCounter(memory); // Get the current instruction location.
     calculateInstructionStrings(memory);
     for(int k = 0, j = instruction - 2; j < instruction + 3; k++, j++)
     {
@@ -567,7 +581,14 @@ void printRegisters(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
             }
         }
         
-        cout << " " << boolNtoInt(WORD_SIZE, memory[j]) << endl; // Print out the decimal version.
+        if(j != PROGRAM_COUNTER)
+        {
+            cout << " " << boolNtoInt(WORD_SIZE, memory[j]) << endl; // Print out the decimal version.
+        }
+        else
+        {
+            cout << " " << getProgramCounter(memory) << endl; // Print out the decimal version.
+        }
     }
 }
 
@@ -605,38 +626,64 @@ void setMemoryBoolArray(int location, bool number[WORD_SIZE], bool memory[TOTAL_
  */
 void setMemoryInt(int location, int number, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-	int negative = 0; // Whether the current number is negative or positive.
-	if(number >= TOTAL_VAL_SIZE) // The number is bigger than the max value size.
-	{
-		OVERFLOW_FLAG = 1;
-	}
-	else if(number < 0) // The number is negative
-	{
-		number *= -1; // Make the number of positive so it works with the conversion algorithm.
-        negative = 1;
-	}
+    if(location != PROGRAM_COUNTER)
+    {
+        int negative = 0; // Whether the current number is negative or positive.
+        if(number >= TOTAL_VAL_SIZE) // The number is bigger than the max value size.
+        {
+            OVERFLOW_FLAG = 1;
+        }
+        else if(number < 0) // The number is negative
+        {
+            number *= -1; // Make the number of positive so it works with the conversion algorithm.
+            negative = 1;
+        }
 
-	int i = 0;
-	while(number > 0)  // Using the convert int to binary algorithm, convert to binary.
-	{
-		int x = number % 2;
-		number = number / 2;
-		memory[location][i] = x;
-		i++;
-	}
-	// Pads the rest of the number with 0's if it's smaller than WORD_SIZE bits.
-	if(i < TOTAL_MEM_SIZE)
-	{
-		for(int j = WORD_SIZE - 1; j >= i; j--)
-		{
-			memory[location][j] = 0;
-		}
-	}
+        int i = 0;
+        while(number > 0)  // Using the convert int to binary algorithm, convert to binary.
+        {
+            int x = number % 2;
+            number = number / 2;
+            memory[location][i] = x;
+            i++;
+        }
+        // Pads the rest of the number with 0's if it's smaller than WORD_SIZE bits.
+        if(i < TOTAL_MEM_SIZE)
+        {
+            for(int j = WORD_SIZE - 1; j >= i; j--)
+            {
+                memory[location][j] = 0;
+            }
+        }
 
-	if(negative == 1)  // If the original number was negative, the current value in memory is positive so must be switched. 
-	{
-		switchSign(WORD_SIZE, memory[location]);
-	}
+        if(negative == 1)  // If the original number was negative, the current value in memory is positive so must be switched. 
+        {
+            switchSign(WORD_SIZE, memory[location]);
+        }
+    }
+    else
+    {
+        if(number >= TOTAL_MEM_SIZE)
+        {
+            OVERFLOW_FLAG = 1;
+        }
+        int i = 0;
+        while(number > 0)  // Using the convert int to binary algorithm, convert to binary.
+        {
+            int x = number % 2;
+            number = number / 2;
+            memory[location][i] = x;
+            i++;
+        }
+        // Pads the rest of the number with 0's if it's smaller than WORD_SIZE bits.
+        if(i < TOTAL_MEM_SIZE)
+        {
+            for(int j = WORD_SIZE - 1; j >= i; j--)
+            {
+                memory[location][j] = 0;
+            }
+        }
+    }
 }
 
 /*

@@ -12,6 +12,8 @@
 int boolNtoInt(int size, bool word[]);
 int boolQuartetToInt(int size, int lengthOfBinaryNumber, int quartetNum, bool word[]);
 
+int getProgramCounter(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
+
 int overflowTest(int size, bool word[]);
 
 // Functions that return nothing.
