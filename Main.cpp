@@ -32,7 +32,7 @@ void runProgram()
 {
     while(true)
     {
-        int programLocation = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]); // Get the current instruction location.
+        int programLocation = getProgramCounter(memory);//boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]); // Get the current instruction location.
         PROG_LOC = programLocation;
         int endOfProgram = 0; // Whether or not this instruction is MOVE R15, R15.
         int opCode = boolQuartetToInt(WORD_SIZE, 4, 4, memory[programLocation]); // Get the op code.
@@ -177,7 +177,7 @@ void runProgram()
         }
         
         // If the program counter was not changed as part of an instruction, and if the instruction is not MOVE R15, R15, then increase the program counter by 1.
-        if(programLocation == boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]) && endOfProgram == 0 && programLocation < TOTAL_MEM_SIZE)
+        if(programLocation == getProgramCounter(memory) && endOfProgram == 0 && programLocation < TOTAL_MEM_SIZE)
         {
             programLocation += 1;
             setMemoryInt(PROGRAM_COUNTER, programLocation, memory);
@@ -195,7 +195,9 @@ int main(int argc, char* argv[])
     testFile = fopen(argv[1], "r");
     loadFile(testFile, memory);
     
-
+    
+    
+    waitForEnter();
     //setMemoryInt(15, 95, memory); /*** loadFile doesn't actually set PC just yet, so manually set it. ***/
     printUserDisplay(memory); // Prints everything that the user needs to see to the screen.
     waitForEnter(); // Wait for the user to press enter before moving on to the next instruction.
