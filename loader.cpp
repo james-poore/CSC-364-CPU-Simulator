@@ -213,8 +213,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
             case aToken::REGISTER:
-                while ((expandedToken[i+1] != ',') && (expandedToken[i+1] != '\n')) {
-                    registerNum[i] = expandedToken[i+1];
+                while ((expandedToken[i] != ',') && (expandedToken[i] != '\n')) {
+                    registerNum[i] = expandedToken[i];
                     i++;
                 }
                 registerNum[i] = '\0';
@@ -236,6 +236,24 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     intToBoolQuartet(atoi(expandedToken), 4, counter, instruction);
                     break;
                 }
+                
+            case aToken::BINARY:
+                if (setFlag == true && counter == 2) {
+                    intToBoolQuartet(atoi(expandedToken), 8, 1, instruction);
+                    break;
+                }
+                
+                else if (setFlag == true && counter != 2) {
+                    //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
+                    break;
+                }
+                
+                else {
+                    intToBoolQuartet(atoi(expandedToken), 4, counter, instruction);
+                    break;
+                }
+                
+            case aToken::HEX:
                 
             default:
                 //Invalid instruction...will handle error later.
