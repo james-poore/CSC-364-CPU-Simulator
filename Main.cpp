@@ -22,6 +22,12 @@ string currentInstructionArray[5];
 
 /* NOTE: Functions go from most significant bit to least significant bit. */
 
+/*
+ TODO:
+ Program counter isn't being set in loader
+ Other misc. loader bugs.
+ */
+
 void runProgram()
 {
     while(true)
@@ -30,6 +36,12 @@ void runProgram()
         PROG_LOC = programLocation;
         int endOfProgram = 0; // Whether or not this instruction is MOVE R15, R15.
         int opCode = boolQuartetToInt(WORD_SIZE, 4, 4, memory[programLocation]); // Get the op code.
+        int registerCheck = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[programLocation]);
+        if(registerCheck == INPUT_REGISTER) // If RD is 6, then the program is trying to write to the input register.
+        {
+            cerr << "Register " << INPUT_REGISTER << " is the input register, and you can not write to it." << endl;
+            exit(EXIT_FAILURE);
+        }
         switch(opCode) // Based on the op code, get the rest of the needed values and do the appropriate instruction.
         {
             case OP_MOVE:
@@ -177,13 +189,16 @@ void runProgram()
     }
 }
 
-// Error checking on PC, R6, R13, R14
 int main(int argc, char* argv[])
 {
     FILE * testFile; // Load in the file given by argv[1] into memory.
     testFile = fopen(argv[1], "r");
     loadFile(testFile, memory);
     
+<<<<<<< HEAD
+=======
+    //setMemoryInt(15, 95, memory); /*** loadFile doesn't actually set PC just yet, so manually set it. ***/
+>>>>>>> 5881cdca4aa0a41803d8f67a30729caacab7a9d7
     printUserDisplay(memory); // Prints everything that the user needs to see to the screen.
     waitForEnter(); // Wait for the user to press enter before moving on to the next instruction.
     runProgram(); // Execute the program.
