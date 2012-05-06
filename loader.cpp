@@ -38,22 +38,6 @@ void printError(char errorMessage[100]) {
     exit(EXIT_FAILURE);
 }
 
-void charArrayToBoolArray(char character[], bool boolean[])
-{
-    for (int i = 0; i < WORD_SIZE; i++) {
-        if (character[i] == 48) {
-            boolean[i] = 0;
-        }
-        else if (character[i] == 49) {
-            boolean[i] = 1;
-        }
-        else {
-            printf("This arrary cannot be converted to a boolean array.\n");
-            exit(EXIT_FAILURE);
-        }
-    }
-}
-
 void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     bool doneFlag = 0;
@@ -255,22 +239,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
             case aToken::BINARY:
-                charArrayToBoolArray(expandedToken, boolean);
                 
-                if (setFlag == true && counter == 2) {
-                    copyBooleanArrayQuartet(boolean, instruction, 8, 1);
-                    break;
-                }
                 
-                else if (setFlag == true && counter != 2) {
-                    //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
-                    break;
-                }
-                
-                else {
-                    copyBooleanArrayQuartet(boolean, instruction, 4, counter);
-                    break;
-                }
                 
             case aToken::HEX:
                 
