@@ -37,7 +37,7 @@ void runProgram()
         int endOfProgram = 0; // Whether or not this instruction is MOVE R15, R15.
         int opCode = boolQuartetToInt(WORD_SIZE, 4, 4, memory[programLocation]); // Get the op code.
         int registerCheck = boolQuartetToInt(WORD_SIZE, WORD_SIZE / 4, 3, memory[programLocation]);
-        if(registerCheck == INPUT_REGISTER) // If RD is 6, then the program is trying to write to the input register.
+        if(registerCheck == INPUT_REGISTER) // If RD is INPUT_REGISTER, then the program is trying to write to the input register which is illegal.
         {
             cerr << "Register " << INPUT_REGISTER << " is the input register, and you can not write to it." << endl;
             exit(EXIT_FAILURE);
