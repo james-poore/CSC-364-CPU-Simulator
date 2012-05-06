@@ -9,6 +9,7 @@
 #ifndef CPU_Simulator_Loader_loader_h
 #define CPU_Simulator_Loader_loader_h
 
+void printError(char errorMessage[100]);
 int loadFile(FILE *file, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]);
 
 #endif

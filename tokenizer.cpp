@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 James Poore. All rights reserved.
 //
 
-//THIS IS A TEST
-
-//THIS IS ANOTHER TEST
 
 
 #include "tokenizer.h"
+//#include "loader.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+using namespace std;
 
 static char* tokLine = NULL;
 
@@ -48,16 +48,16 @@ void startToken(char* line)
 aToken getNextToken()
 {
     aToken res;
-    if (currTokPos == NULL || *currTokPos == '\n')
+    if (*currTokPos == NULL || *currTokPos == '\n')
     {
         // End of line reached.  (Nothing left to parse)
         res.type = aToken::EOL;
-        res.start = NULL;
+        res.start = currTokPos;
         return res;
     }
     
     // Find the first non-white space
-    while (*currTokPos == ' ')
+    while (*currTokPos == (' ')
         currTokPos++;
     
     switch (*currTokPos)
@@ -76,8 +76,15 @@ aToken getNextToken()
         
         case '/':
             //We have found a comment line, ignore everthing else on that line
-            res.start = currTokPos;
-            res.type = aToken::COMMENT;
+            if (*(currTokPos + 1) == '/') {
+                res.start = currTokPos;
+                res.type = aToken::COMMENT;
+            }
+            else {
+                printf("Would print an actual error here, but C apparently WON'T let you do anything you want!!!\nComments require '//'\n");
+                exit(EXIT_FAILURE);
+                //printError("'/' character not recognized.");
+            }
             return res;
             
         case '0':
@@ -143,6 +150,6 @@ aToken getNextToken()
     
     
     // Return the start of this token
-    return res;
+    //return res;
 }
 

@@ -34,7 +34,7 @@ void loadValue(bool instruction[WORD_SIZE], int counter, int a, int b, int c, in
 }
 
 void printError(char errorMessage[100]) {
-    std::cout << "Line " << lineNumber << " : " << errorMessage << "\n";
+    std::cout << "Line " << lineNumber << " : " << errorMessage << endl;
     exit(EXIT_FAILURE);
 }
 
@@ -57,13 +57,13 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     aToken answer;
     
     int counter = 4;
-    int counter3 = 4;
     int i = 0;
     int j = 0;
     int k = 0;
     bool setFlag = 0;
+    bool argFlag = 0;
     
-    while ((!doneFlag) && counter3 > 0) {
+    while ((!doneFlag)) {
         
         doneFlag = 0;
         
@@ -123,13 +123,13 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 if (strcasecmp(expandedToken, "MOVE") == 0) {
                     loadValue(instruction, counter, 0, 0, 0, 0);
-                    counter3--;
+                    argFlag = 1;
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "NOT") == 0) {
                     loadValue(instruction, counter, 0, 0, 0, 1);
-                    counter3--;
+                    argFlag = 1;
                     break;
                 }
                 
@@ -165,14 +165,14 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 else if (strcasecmp(expandedToken, "SET") == 0) {
                     loadValue(instruction, counter, 1, 0, 0, 0);
-                    counter3--;
+                    argFlag = 1;
                     setFlag = true;
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "SETH") == 0) {
                     loadValue(instruction, counter, 1, 0, 0, 1);
-                    counter3--;
+                    argFlag = 1;
                     setFlag = true;
                     break;
                 }
@@ -224,7 +224,6 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
             case aToken::DATA:
                 if (setFlag == true && counter == 2) {
                     intToBoolQuartet(atoi(expandedToken), 8, 1, instruction);
-                    doneFlag = 1;
                     break;
                 }
                 
@@ -245,16 +244,20 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
         
         counter--;
-        counter3--;
-        free(expandedToken);
+        if (expandedToken != NULL) {
+            free(expandedToken);
+        }
     
     }
-    if (counter3 == 0) {
-        
+
+    if (counter == -1) {
         setMemoryBoolArray(memLocation, instruction, memory);
         memLocation++;
     }
-    
+    else if ( (argFlag == 1) && (counter == 0) ) {
+        setMemoryBoolArray(memLocation, instruction, memory);
+        memLocation++;
+    }
     
 }
 
