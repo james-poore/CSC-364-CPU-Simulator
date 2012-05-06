@@ -47,6 +47,8 @@ void startToken(char* line)
 
 aToken getNextToken()
 {
+    bool hexBinFlag = false;
+    
     aToken res;
     if (*currTokPos == NULL || *currTokPos == '\n')
     {
@@ -88,6 +90,16 @@ aToken getNextToken()
             return res;
             
         case '0':
+            if (*(currTokPos + 1) == 'b') {
+                res.type = aToken::BINARY;
+                hexBinFlag = true;
+                currTokPos += 2;
+            }
+            else if (*(currTokPos + 1) == 'x') {
+                res.type = aToken::HEX;
+                hexBinFlag = true;
+                currTokPos += 2;
+            }
         case '1':
         case '2':
         case '3':
@@ -97,8 +109,11 @@ aToken getNextToken()
         case '7':
         case '8':
         case '9':
+            if (!hexBinFlag) {
+                res.type = aToken::DATA;
+            }
+            
             res.start = currTokPos;
-            res.type = aToken::DATA;
             
             while (*currTokPos != ' ' &&
                    *currTokPos != '\n')
@@ -113,7 +128,7 @@ aToken getNextToken()
             return res;
             
         case 'R':
-            res.start = (currTokPos);
+            res.start = currTokPos += 1;
             res.type = aToken::REGISTER;
             
             while (*currTokPos != ' ' &&

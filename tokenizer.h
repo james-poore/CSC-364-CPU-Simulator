@@ -16,7 +16,7 @@
 typedef struct
 {
     char *start;
-    enum { OP_CODE, EOL, MEM_LOCATION, DATA, REGISTER, COMMENT } type;
+    enum { OP_CODE, EOL, MEM_LOCATION, DATA, REGISTER, COMMENT, BINARY, HEX } type;
 } aToken;
 
 static char* currTokPos;
