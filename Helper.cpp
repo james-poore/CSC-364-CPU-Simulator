@@ -14,9 +14,6 @@
 
 using namespace std;
 
-/* TODO: Test whether boolN sets negative #s sign bit correctly.
-         Comment bitwiseAdd and bitwiseAddImm */
-
 /*
  * int boolNtoInt(int size, bool word[])
  * Converts the binary number (in the bool array) to an int.
@@ -34,50 +31,49 @@ int boolNtoInt(int size, bool word[])
         }
         return sum;
     }
-    else // If the sign bit it 1 (negative #) first do two's complement, then convert that binary # to an int, then negate that int. 
+    else // If the sign bit it 1 (negative #)
     {
-        //int i = size - 2;
-        //int overflowTest = 1;
-        // Test to see if the number is of the form 1000 0000 ... 0000. If so, this is an overflow, since two's complement will result in the same number (0111 1111 ... 1111 + 0001 = 1000 0000 ... 0000).
-        /*while (i >= 0) 
-        {
-            if(word[i] == 1)
-            {
-                overflowTest = 0;
-                break;
-            }
-            i--;
-        }*/
-        int overflow = overflowTest(size, word);
+        bool test[WORD_SIZE]; // Copy over the word into some temporary memory.
+        zeroBoolArray(WORD_SIZE, test);
+        copyBooleanArray(word, test);
         
-        if(overflow == 0) // If the number is not an overflow number, proceed as normal.
+        int overflow = overflowTest(size, word); // Test whether the number is an overflow number (1000 0000 ... 0000).
+        
+        if(overflow == 0) // If the number is not an overflow number
         {
-            switchSign(size, word);
-            sum = boolNtoInt(size, word);
-            return -sum;
+            switchSign(size, test); // Do two's compliment on the number, and then re-call boolN (since it's now positive)
+            sum = boolNtoInt(size, test); // This will be the positive version of the number.
+            return -sum; // Return the properly negated version.
         }
         else // Otherwise, do a bitwise not on the number and set the overflow flag.
         {
             OVERFLOW_FLAG = 1;
-            bitwiseNot(size, word, word);
-            sum = boolNtoInt(size, word);
+            bitwiseNot(size, test, test);
+            sum = boolNtoInt(size, test);
             return sum;
         }
     }
 }
 
-// lengthOfBinaryNumber is eithr 4 or 8.
-// Test for negative numbers.
+/*
+ * int boolQuartetToInt(int size, int lengthOfBinaryNumber, int quartetNum, bool word[])
+ * Converts a quartet/octet in memory to an integer.
+ * Returns the converted integer number.
+ */
 int boolQuartetToInt(int size, int lengthOfBinaryNumber, int quartetNum, bool word[])
 {
-    int i = 4 * (quartetNum - 1);
+    if(lengthOfBinaryNumber != 4 && lengthOfBinaryNumber != 8)
+    {
+        cerr << "boolQuartetToInt: LengthOfBinaryNumber must be either 4 or 8 but is " << lengthOfBinaryNumber << endl;
+        exit(EXIT_FAILURE);
+    }
+    int i = 4 * (quartetNum - 1); // C0 for 1, C4 for 2, C8 for 3, C 12 for 4.
     int sum = 0;
-    for(int j = 0; j < lengthOfBinaryNumber; j++, i++)
+    for(int j = 0; j < lengthOfBinaryNumber; j++, i++) // Goes either 4 or 8 bits and converts the quartet/octet into an int. 
     {
         sum += word[i] * pow(2, j);
     }
     return sum;
-
 }
 
 /*
@@ -97,7 +93,7 @@ int overflowTest(int size, bool word[])
         if(word[i] == 1)
         {
             overflowTest = 0;
-            break;
+            return overflowTest;
         }
         i--;
     }
@@ -167,6 +163,7 @@ void bitwiseAdd(int sizeA, bool wordA[], int sizeB, bool wordB[], bool result[])
         }
     }
     
+    // If both numbers were positive and the result is negative, this is an overflow.
     if((wordA[sizeA - 1] == 0 && wordB[sizeB - 1] == 0) && result[counter - 1] == 1)
     {
         OVERFLOW_FLAG = 1;
@@ -215,6 +212,7 @@ void bitwiseAddImm(int sizeA, bool wordA[], int addImm, bool result[])
         counterA++;
     }
     
+    // If both numbers were positive and the result is negative, this is an overflow.
     if((wordA[sizeA - 1] == 0 && wordB[sizeA - 1] == 0) && result[sizeA - 1] == 1)
     {
         OVERFLOW_FLAG = 1;
@@ -241,22 +239,23 @@ void bitwiseNot(int size, bool word[], bool result[])
 }
 
 /*
- 
+ * void calculateInstructionStrings(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Calculate the English version of the current instruction, the 2 previous, and the 2 next instructions.
  */
 void calculateInstructionStrings(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    int programLocation = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]);
-    int j = programLocation - 2;
-    for(int i = 0; j <= programLocation + 2; i++, j++)
+    int programLocation = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]); // The instruction that is at the location specificed by the program counter.
+    int j = programLocation - 2; // Start at 2 before it
+    for(int i = 0; j <= programLocation + 2; i++, j++) // Go until 2 after it.
     {
-        if(j < 0)
+        if(j < 0) // If j is negative, do nothing since memory starts at 0.
         {
             currentInstructionArray[i] = "";
             continue;
         }
-        int opCode = boolQuartetToInt(WORD_SIZE, 4, 4, memory[j]);
-        stringstream ins;
-        switch(opCode)
+        int opCode = boolQuartetToInt(WORD_SIZE, 4, 4, memory[j]); // Get the op code.
+        stringstream ins; // Used to concatenate all of the words and the data into one string.
+        switch(opCode) // Based on the op code, get the correct registers/data and concatenate them together properly.
         {
             case OP_MOVE:
             {
@@ -383,28 +382,22 @@ void calculateInstructionStrings(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
                 break;
             }
         }
-        
+        // Add the string and flush the buffer. Always flush your buffers.
         currentInstructionArray[i] = ins.str();
         ins.flush();
     }
 }
 
 /*
- * void printBoolArray(int size, bool word[])
- * Prints the given binary number (in the bool array).  
- * size refers to the size of the boolean array.
+ * void copyBooleanArray(bool src[], bool dest[])
+ * Copies the source array into the destination array.
  */
-void printBoolArray(int size, bool word[])
+void copyBooleanArray(bool src[], bool dest[])
 {
-	for(int i = size - 1; i >= 0; i--)
-	{
-		cout << word[i];
-		if(i > 0 && i % 4 == 0) // Print a space between every four numbers.
-		{
-			cout << " ";
-		}
-	}
-	cout << endl;
+    for(int i = WORD_SIZE; i >= 0; i--)
+    {
+        dest[i] = src[i];
+    }
 }
 
 /*
@@ -422,11 +415,8 @@ void intToBoolN(int number, int size, bool word[])
 	}
 	else if(number < 0) // The number is negative
 	{
-		NEGATIVE_FLAG = 1;
         number *= -1; // Make the number of positive so it works with the conversion algorithm.
         negative = 1;
-        
-        cout << "Negative flag has been set." << endl;
 	}
 
 	int i = 0;
@@ -463,7 +453,8 @@ void intToBoolQuartet(int number, int size, int quartetNum, bool word[])
 {
     if(number < 0)
     {
-        OVERFLOW_FLAG = 1; // Error, should only be positive numbers.
+        cerr << "Quartets can only be set to positive values." << endl;
+        exit(EXIT_FAILURE);
     }
     bool memoryCopy[size];
     intToBoolN(number, size, memoryCopy);
@@ -472,30 +463,24 @@ void intToBoolQuartet(int number, int size, int quartetNum, bool word[])
     {
         word[i] = memoryCopy[j];
     }
-    
-	/*int negative = 0;
-	bool temp[size];
+}
 
-
-	if(number < 0)
+/*
+ * void printBoolArray(int size, bool word[])
+ * Prints the given binary number (in the bool array).  
+ * size refers to the size of the boolean array.
+ */
+void printBoolArray(int size, bool word[])
+{
+	for(int i = size - 1; i >= 0; i--)
 	{
-		number *= -1;
-		negative = 1;
+		cout << word[i];
+		if(i > 0 && i % 4 == 0) // Print a space between every four numbers.
+		{
+			cout << " ";
+		}
 	}
-
-	int i = 4 * (quartetNum - 1); // Starting position of the quartet (least significant bit).
-	while(number > 0)
-	{
-		int x = number % 2;
-		number = number / 2;
-		word[i] = x;
-		i++;
-	}
-
-	if(negative == 1)
-	{
-		switchSign(size, word);
-	}*/
+	cout << endl;
 }
 
 /*
@@ -518,43 +503,37 @@ void printMemoryLocation(int index, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 
 /* 
  * void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
- *
+ * Prits the binary and English versions of the current instruction, as well as the 2 before and after it.
  */
 void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    int instruction = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]);
+    int instruction = boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]); // Get the current instruction location.
     calculateInstructionStrings(memory);
     for(int k = 0, j = instruction - 2; j < instruction + 3; k++, j++)
     {
-        if(j < 0)
+        if(j < 0) // If j is negative, do nothing since memory starts at 0.
         {
             continue;
         }
         cout << j << ": ";
-        /*if(j < 10)
-        {
-            cout << " ";
-        }*/
-        for(int i = WORD_SIZE - 1; i >= 0; i--)
+        for(int i = WORD_SIZE - 1; i >= 0; i--) // Print out the binary version.
         {
             cout << memory[j][i];
-            if(i > 0 && i % 4 == 0)
+            if(i > 0 && i % 4 == 0) // Space out every 4 bits.
             {
                 cout << " ";
             }
         }
         
-        cout << " " << k << ": " << currentInstructionArray[k];
+        cout << " " << currentInstructionArray[k]; // Print out the English version
         
         if(j == instruction)
         {
-            cout << " <----- Instruction to be executed.";
+            cout << " \t\t\t<----- Instruction to be executed."; // If this line is the current instruction, print out a note.
         }
         
         cout << endl;
     }
-    
-    cout << endl << "Type in e or exit to quit, or hit enter to continue" << endl;
 }
 
 /*
@@ -566,21 +545,35 @@ void printRegisters(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
     for(int j = 0; j < 16; j++)
     {
         cout << j << ": ";
-        if(j < 10)
+        if(j < 10) // If the number is only 1 digit, print out an extra space to line them up correctly.
         {
             cout << " ";
         }
-        for(int i = WORD_SIZE - 1; i >= 0; i--)
+        for(int i = WORD_SIZE - 1; i >= 0; i--) // Print out the binary version.
         {
             cout << memory[j][i];
-            if(i > 0 && i % 4 == 0)
+            if(i > 0 && i % 4 == 0) // Space out every 4 bits.
             {
                 cout << " ";
             }
         }
         
-        cout << " " << boolNtoInt(WORD_SIZE, memory[j]) << endl;
+        cout << " " << boolNtoInt(WORD_SIZE, memory[j]) << endl; // Print out the decimal version.
     }
+}
+
+/*
+ * void printUserDisplay(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+ * Calls the functions to print everything to the screen for the user.
+ */
+void printUserDisplay(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
+{
+    system("clear"); // Clear the screen and print the registers and the section of memory around the instruction pointed to by the program counter.
+    printRegisters(memory);
+    cout << endl;
+    printProgramCounterMemory(memory);
+    cout << endl;
+    cout << "Overflow Flag: " << OVERFLOW_FLAG << endl;
 }
 
 /*
@@ -610,11 +603,8 @@ void setMemoryInt(int location, int number, bool memory[TOTAL_MEM_SIZE][WORD_SIZ
 	}
 	else if(number < 0) // The number is negative
 	{
-		NEGATIVE_FLAG = 1;
 		number *= -1; // Make the number of positive so it works with the conversion algorithm.
         negative = 1;
-        
-        cout << "Negative flag has been set." << endl;
 	}
 
 	int i = 0;
@@ -648,14 +638,14 @@ void switchSign(int size, bool number[])
 {
 	for(int i = size - 1; i >= 0; i--) // Bitwise not the number.
 	{
-			if(number[i] == 0)
-			{
-				number[i] = 1;
-			}
-			else
-			{
-				number[i] = 0;
-			}
+        if(number[i] == 0)
+        {
+            number[i] = 1;
+        }
+        else
+        {
+            number[i] = 0;
+        }
 	}
     bitwiseAddImm(size, number, 1, number); // Add 1 to it.
 }
@@ -667,6 +657,7 @@ void switchSign(int size, bool number[])
  */
 void waitForEnter()
 {
+    cout << endl << "Type in e or exit to quit, or hit enter to continue" << endl;
     int c;
     fflush( stdout );
     do 

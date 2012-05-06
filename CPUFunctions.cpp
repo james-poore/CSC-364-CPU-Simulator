@@ -6,8 +6,6 @@
 
 /* NOTE: Functions go from most significant bit to least significant bit. */
 
-/* TODO: All ops after sub */
-
 #include <iostream>
 #include <stdlib.h>
 
@@ -23,7 +21,7 @@ using namespace std;
  */
 void move(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-	for(int i = WORD_SIZE - 1; i >= 0; i--)
+	for(int i = WORD_SIZE - 1; i >= 0; i--) // Moves in the value bit by bit into regD
 	{
 		memory[regD][i] = memory[regA][i];
 	}
@@ -35,7 +33,7 @@ void move(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  */
 void not_op(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-	for(int i = WORD_SIZE - 1; i >= 0; i--)
+	for(int i = WORD_SIZE - 1; i >= 0; i--) // Nots each bit and move it into regD.
 	{
 		if(memory[regA][i] == 0)
 		{
@@ -47,7 +45,7 @@ void not_op(int regD, int regA, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 
 			memory[regD][i] = 0;
 		}
-		else
+		else // Somehow there was a non binary value in memory.
 		{
 			cerr << "Error. Memory has a value that is not 0 or 1." << endl;
 			exit(1);
@@ -99,14 +97,6 @@ void or_op(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  */
 void add(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-	/*int a = boolNtoInt(WORD_SIZE, memory[regA]);
-	int b = boolNtoInt(WORD_SIZE, memory[regB]);
-	int d = a + b;
-    cout << a << " + " << b << " = " << a + b << endl;
-	bool result[WORD_SIZE];
-	intToBoolN(d, WORD_SIZE, result);
-	setMemoryBoolArray(regD, result, memory);*/
-    
     bitwiseAdd(WORD_SIZE, memory[regA], WORD_SIZE, memory[regB], memory[regD]);
 }
 
@@ -116,16 +106,15 @@ void add(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  */
 void sub(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-	int a = boolNtoInt(WORD_SIZE, memory[regA]);
+	int a = boolNtoInt(WORD_SIZE, memory[regA]); // Turns the values in memory into ints.
 	int b = boolNtoInt(WORD_SIZE, memory[regB]);
-	int d = a - b;
-    cout << d << endl;
+	int d = a - b; 
     /*if(a > 0 && a < b && d < 0)
     {
         OVERFLOW_FLAG = 1;
     }*/
-	bool result[WORD_SIZE];
-	intToBoolN(d, WORD_SIZE, result);
+	bool result[WORD_SIZE]; 
+	intToBoolN(d, WORD_SIZE, result); // Converts the result of the integer subtraction into binary, store it in result.
 	setMemoryBoolArray(regD, result, memory);
 }
 
@@ -144,11 +133,11 @@ void addI(int regD, int regA, int data4, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
  */
 void subI(int regD, int regA, int data4, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    int a = boolNtoInt(WORD_SIZE, memory[regA]);
+    int a = boolNtoInt(WORD_SIZE, memory[regA]); // Turns regA's value into an int.
     int d = a - data4;
-    cout << d << endl;
+    
     bool result[WORD_SIZE];
-	intToBoolN(d, WORD_SIZE, result);
+	intToBoolN(d, WORD_SIZE, result); // Converts the result of the integer subtraction into binary, store it in result.
 	setMemoryBoolArray(regD, result, memory);
 }
 
@@ -168,12 +157,17 @@ void set(int regD, int data8, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 void setH(int regD, int data8, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     bool memoryCopy[WORD_SIZE / 2];
-    intToBoolN(data8, WORD_SIZE / 2, memoryCopy);
+    intToBoolN(data8, WORD_SIZE / 2, memoryCopy); // Convert the data into a binary number.
+    
     int j = (WORD_SIZE / 2) - 1;
-    for(int i = WORD_SIZE - 1; i >= 0; i--)
+    for(int i = WORD_SIZE - 1; i >= 0; i--) // Copies the number into memory's high bits
     {
         if(i >= WORD_SIZE / 2)
         {
+            // memory[regD][15] = memoryCopy[7]
+            // memory[regD][14] = memoryCopy[6]
+            // ... all the way to
+            // memory[regD][8]  = memoryCopy[0]
             memory[regD][i] = memoryCopy[j];
             j--;
         }
@@ -187,7 +181,7 @@ void setH(int regD, int data8, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 void incIZ(int regD, int data4, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     int result = 1;
-    for(int i = WORD_SIZE -1; i >= 0; i--)
+    for(int i = WORD_SIZE - 1; i >= 0; i--) // Scan through the memory, if any of the values are 1 then the number is not 0.
     {
         if(memory[regB][i] == 1)
         {
@@ -195,7 +189,8 @@ void incIZ(int regD, int data4, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]
             break;
         }
     }
-    if(result == 1)
+    
+    if(result == 1) // If all the values were 0, do the addI. 
     {
         addI(regD, regD, data4, memory);
     }
@@ -220,7 +215,7 @@ void decIN(int regD, int data4, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]
 void moveZ(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     int result = 1;
-    for(int i = WORD_SIZE - 1; i >= 0; i--)
+    for(int i = WORD_SIZE - 1; i >= 0; i--) // Scan through the memory, if any of the values are 1 then the number is not 0.
     {
         if(memory[regB][i] == 1)
         {
@@ -228,7 +223,7 @@ void moveZ(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
             break;
         }
     }
-    if(result == 1)
+    if(result == 1) // If all the values are 0, do the move.
     {
         move(regD, regA, memory);
     }
@@ -241,7 +236,7 @@ void moveZ(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 void moveX(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     int result = 0;
-    for(int i = WORD_SIZE - 1; i >= 0; i--)
+    for(int i = WORD_SIZE - 1; i >= 0; i--) // Scan through the memory, if any of the values are 1 then the number is not 0.
     {
         if(memory[regB][i] == 1)
         {
@@ -249,7 +244,7 @@ void moveX(int regD, int regA, int regB, bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
             break;
         }
     }
-    if(result == 1)
+    if(result == 1) // If any of the values are not 0, then do the move.
     {
         move(regD, regA, memory);
     }
