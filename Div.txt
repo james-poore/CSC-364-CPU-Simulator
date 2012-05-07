@@ -10,7 +10,7 @@ SET R3, 0  // Invalid op codes aren't tested, neither are out of bounds register
 SET R4, 0		// hmm, it seems like if a comment goes over to the next line then it skips the line.
 ADDI R5, R15, 6
 SUB R7, R1, R2
-MOVEN R15, R5, R7	
+MOVEN R15, R5, R7 // 123123 123123123123
 MOVE R1, R7
 ADDI R3, R3, 1
 SUBI R15, R15, 4 // comment

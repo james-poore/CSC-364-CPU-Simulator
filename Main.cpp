@@ -26,6 +26,21 @@ void runProgram()
 {
     while(true)
     {
+        int readWrite = memory[13][15];
+        if(readWrite == 0)
+        {
+            
+        }
+        else if (readWrite == 1)
+        {
+            
+        }
+        else
+        {
+            cerr << "Non boolean value is in the read/write flag." << endl;
+            exit(EXIT_FAILURE);
+        }
+        
         int programLocation = getProgramCounter(memory);//boolNtoInt(WORD_SIZE, memory[PROGRAM_COUNTER]); // Get the current instruction location.
         PROG_LOC = programLocation;
         int endOfProgram = 0; // Whether or not this instruction is MOVE R15, R15.
@@ -171,7 +186,7 @@ void runProgram()
         }
         
         // If the program counter was not changed as part of an instruction, and if the instruction is not MOVE R15, R15, then increase the program counter by 1.
-        if(programLocation == getProgramCounter(memory) && endOfProgram == 0 && programLocation < TOTAL_MEM_SIZE)
+        if(programLocation == getProgramCounter(memory) && endOfProgram == 0 && programLocation < (TOTAL_MEM_SIZE - 1))
         {
             programLocation += 1;
             setMemoryInt(PROGRAM_COUNTER, programLocation, memory);

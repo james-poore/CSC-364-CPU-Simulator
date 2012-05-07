@@ -608,6 +608,10 @@ void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
         {
             continue;
         }
+        else if(j >= TOTAL_MEM_SIZE) // If j is at or above the max memory size, then we are at the end of memory.
+        {
+            return;
+        }
         cout << j << ": ";
         for(int i = WORD_SIZE - 1; i >= 0; i--) // Print out the binary version.
         {
