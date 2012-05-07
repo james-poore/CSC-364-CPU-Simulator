@@ -91,12 +91,12 @@ aToken getNextToken()
             return res;
             
         case '0':
-            if (*(currTokPos + 1) == 'b') {
+            if ((*(currTokPos + 1) == 'b') || (*(currTokPos + 1) == 'B')) {
                 res.type = aToken::BINARY;
                 hexBinFlag = true;
                 currTokPos += 2;
             }
-            else if (*(currTokPos + 1) == 'x') {
+            else if ((*(currTokPos + 1) == 'x') || (*(currTokPos + 1) == 'X')) {
                 res.type = aToken::HEX;
                 hexBinFlag = true;
                 currTokPos += 2;

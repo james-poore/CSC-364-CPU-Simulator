@@ -7,6 +7,8 @@
 //
 
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,6 +22,8 @@
 
 #define MAX_LINE_LENGTH 500
 #define PC 15
+
+using namespace std;
 
 int memLocation = 0;
 int lineNumber = 1;
@@ -119,16 +123,28 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     break;
                 }
                 
-                else if(strncasecmp(memLoc2, "0b") == 0) {
-                    memLoc2 = memLoc2.substr(2, memLoc2.size() - 2);
+                else if(strncasecmp(memLoc2, "0b", 2) == 0) {
+                    stringstream ss;
+                    string s;
+                    ss << memLoc2;
+                    s = ss.str();
+                    s = s.substr(2, s.size() - 2);
+                    strcpy(memLoc2, s.c_str());
                     intToBoolQuartet(binaryToInt(memLoc2, memory), WORD_SIZE, 1, tempMemLoc);
                     setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
+                    break;
                 }
                 
-                else if(strncasecmp(memLoc2, "0x") == 0) {
-                    memLoc2 = memLoc2.substr(2, memLoc2.size() - 2);
+                else if(strncasecmp(memLoc2, "0x", 2) == 0) {
+                    stringstream ss;
+                    string s;
+                    ss << memLoc2;
+                    s = ss.str();
+                    s = s.substr(2, s.size() - 2);
+                    strcpy(memLoc2, s.c_str());
                     intToBoolQuartet(hexToInt(memLoc2, memory), WORD_SIZE, 1, tempMemLoc);
                     setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
+                    break;
                 }
                 
                 else {
@@ -260,7 +276,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 intToBoolQuartet(regNum, 4, counter, instruction);
                 break;
                 
-            case aToken::DATA:
+            case aToken::DATA:                                                              //ADD ERROR REPORTING FOR VALUES THAT ARE TOO LARGE...EX 8-BIT>255 OR 4-BIT>15 FOR DECIMAL
+                                                                                            //BINARY AND HEX
                 if (setFlag == true && counter == 2) {
                     intToBoolQuartet(atoi(expandedToken), 8, 1, instruction);
                     break;
