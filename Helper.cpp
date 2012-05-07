@@ -602,6 +602,38 @@ void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
     int instruction = getProgramCounter(memory); // Get the current instruction location.
     calculateInstructionStrings(memory);
+    
+    bool extraSpaceBefore = false; // Calculate whether extra space needs to be printed to keep all the instructions in line.
+    bool extraSpaceAfter = false;
+    switch(instruction - 2)
+    {
+        case 8:
+        case 9:
+        case 98:
+        case 99:
+        case 998:
+        case 999:
+        case 9998:
+        case 9999:
+        {
+            extraSpaceBefore = true;
+        }
+    }
+    switch(instruction + 2)
+    {
+        case 10:
+        case 11:
+        case 100:
+        case 101:
+        case 1000:
+        case 1001:
+        case 10000:
+        case 10001:
+        {
+            extraSpaceAfter = true;
+        }
+    }
+    
     for(int k = 0, j = instruction - 2; j < instruction + 3; k++, j++)
     {
         if(j < 0) // If j is negative, do nothing since memory starts at 0.
@@ -613,6 +645,50 @@ void printProgramCounterMemory(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
             return;
         }
         cout << j << ": ";
+        
+        if(extraSpaceBefore == true) // Prints out extra space if the line would otherwise be out of line with the others.
+        {
+            switch(j)
+            {
+                case 8:
+                case 9:
+                case 98:
+                case 99:
+                case 998:
+                case 999:
+                case 9998:
+                case 9999:
+                {
+                    cout << " ";
+                }
+            }
+        }
+        if(extraSpaceAfter == true)
+        {
+            switch(j)
+            {
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 96:
+                case 97:
+                case 98:
+                case 99:
+                case 996:
+                case 997:
+                case 998:
+                case 999:
+                case 9996:
+                case 9997:
+                case 9998:
+                case 9999:
+                {
+                    cout << " ";
+                }
+            }
+        }
+        
         for(int i = WORD_SIZE - 1; i >= 0; i--) // Print out the binary version.
         {
             cout << memory[j][i];

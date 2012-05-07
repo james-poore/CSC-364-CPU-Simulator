@@ -1,13 +1,13 @@
 #1=17
 #2=5
-#100=ASM
+#96=ASM
 SET R3, 0
 SUBI R3, R3, 1
 MOVE R4, R3
 ADDI R5, R15, 11 // loader needs to check to see if you're loading outside of memory.
 MOVEZ R15, R5, R2 // comment
 SET R3, 0  // Invalid op codes aren't tested, neither are out of bounds registers
-SET R4, 0		// hmm, it seems like if a comment goes over to the next line then it skips the line.
+SET R4, 0 // hmm, it seems like if a comment goes over to the next line then it skips the line.
 ADDI R5, R15, 6
 SUB R7, R1, R2
 MOVEN R15, R5, R7 // 123123 123123123123
