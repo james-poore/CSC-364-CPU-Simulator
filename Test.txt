@@ -1,5 +1,10 @@
 #100=ASM
 SET R2, 0b1011
+MOVE R7, R3 //al;kfjaslkjflasdj asdlfkjasdl;jkf asdlkfj;lkasdjf asdlkfjkd asd9349023 asdflk;j
+SET R8, 0
+SUBI R9, R8, 4
+INCIZ R10, 12, R8
+DECIN R10, 6, R9
 SET R3, 0x10
-SUB R4, R3, R2
+SUB R4, R3, R2 //This is a comment 12
 MOVE R15, R15

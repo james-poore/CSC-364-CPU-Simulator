@@ -87,6 +87,8 @@ aToken getNextToken()
                 exit(EXIT_FAILURE);
                 //printError("'/' character not recognized.");
             }
+            //res.start = currTokPos;
+            //res.type = aToken::COMMENT;
             return res;
             
         case '0':

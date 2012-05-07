@@ -58,6 +58,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     aToken answer;
     
     int counter = 4;
+    int regNum = 0;
     int i = 0;
     int j = 0;
     int k = 0;
@@ -65,6 +66,11 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     bool argFlag = 0;
     
     while ((!doneFlag)) {
+        
+        if (memLocation > 65535) {
+            printError("Program exceeds bounds of memory");
+            exit(EXIT_FAILURE);
+        }
         
         doneFlag = 0;
         
@@ -88,6 +94,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 if ( atoi(memLoc1) > 65535 ) {
                     printError("Expected value less than 65535 before '=' ");
+                    exit(EXIT_FAILURE);
                 }
                 
                 j++;
@@ -102,6 +109,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 if ( (atoi(memLoc2) > 32767)  || (atoi(memLoc2) < -32768)  ) {
                     printError("Expected value between -32768 and 32767 before ';' ");
+                    exit(EXIT_FAILURE);
                 }
                 
                 if (strcasecmp(memLoc2, "ASM") == 0) {
@@ -212,17 +220,31 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
                 else {
-                    //Invalid OP CODE... will handle error later.
-                    break;
+                    printError("Invalid op-code.");
+                    exit(EXIT_FAILURE);
                 }
                 
             case aToken::REGISTER:
-                while ((expandedToken[i] != ',') && (expandedToken[i] != '\n')) {
+                while ((expandedToken[i] != ',') && (expandedToken[i] != '\n') && (expandedToken[i] != '\0')) {
                     registerNum[i] = expandedToken[i];
                     i++;
                 }
                 registerNum[i] = '\0';
-                intToBoolQuartet(atoi(registerNum), 4, counter, instruction);
+                
+                regNum = atoi(registerNum);
+                
+                if (regNum > 15 || regNum < 0) {
+                    printError("Invalid register number.");
+                    exit(EXIT_FAILURE);
+                }
+                
+                else if (regNum == 6 && counter == 3) {
+                    printError("Register 6 is the input register. Write functionality not permitted.");
+                    exit(EXIT_FAILURE);
+                }
+                    
+                
+                intToBoolQuartet(regNum, 4, counter, instruction);
                 break;
                 
             case aToken::DATA:
@@ -232,8 +254,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
                 else if (setFlag == true && counter != 2) {
-                    //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
-                    break;
+                    printError("8-bit data given, 4-bit data expected.");
+                    exit(EXIT_FAILURE);
                 }
                 
                 else {
@@ -248,8 +270,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
                 else if (setFlag == true && counter != 2) {
-                    //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
-                    break;
+                    printError("8-bit data given, 4-bit data expected.");
+                    exit(EXIT_FAILURE);
                 }
                 
                 else {
@@ -264,8 +286,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
                 else if (setFlag == true && counter != 2) {
-                    //Passed 8-bit data in the 1st or 3rd quartet which is invalid...will handle error later.
-                    break;
+                    printError("8-bit data given, 4-bit data expected.");
+                    exit(EXIT_FAILURE);
                 }
                 
                 else {
@@ -274,8 +296,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
             default:
-                //Invalid instruction...will handle error later.
-                break;
+                printError("Invalid instruction.");
+                exit(EXIT_FAILURE);
         }
     
         
@@ -290,7 +312,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
         setMemoryBoolArray(memLocation, instruction, memory);
         memLocation++;
     }
-    else if ( (argFlag == 1) && (counter == 0) ) {
+    else if ( (argFlag == 1) && (counter == 0)) {
         setMemoryBoolArray(memLocation, instruction, memory);
         memLocation++;
     }
