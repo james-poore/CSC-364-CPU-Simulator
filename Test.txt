@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 #65530=ASM
+=======
+#2=8
+#100=ASM
+>>>>>>> Honestly don't know what was changed.
 SET R2, 0b1011
-MOVE R7, R3 //al;kfjaslkjflasdj asdlfkjasdl;jkf asdlkfj;lkasdjf asdlkfjkd asd9349023 asdflk;j
+MOVE R7, R3 			//al;kfjaslkjflasdj asdlfkjasdl;jkf asdlkfj;lkasdjf asdlkfjkd asd9349023 asdflk;j
 SET R8, 0
 SUBI R9, R8, 4
 INCIZ R10, 12, R8
@@ -11,5 +16,12 @@ SUB R4, R3, R2
 //MOVE R15, R15
 =======
 SUB R4, R3, R2 //This is a comment 12
+<<<<<<< HEAD
 MOVE R15, R15
 >>>>>>> 724d22eef674ccfdc2a76e9a9a8884b8fa1fe6cd
+=======
+
+
+
+MOVE R15, R15
+>>>>>>> Honestly don't know what was changed.

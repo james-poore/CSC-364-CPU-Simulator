@@ -59,7 +59,7 @@ aToken getNextToken()
     }
     
     // Find the first non-white space
-    while (*currTokPos == (' '))
+    while (*currTokPos == (' ') || *currTokPos == '\t')
         currTokPos++;
     
     switch (*currTokPos)
@@ -117,8 +117,7 @@ aToken getNextToken()
             
             res.start = currTokPos;
             
-            while (*currTokPos != ' ' &&
-                   *currTokPos != '\n')
+            while (*currTokPos != ' ' && *currTokPos != '\n' && *currTokPos != '\t')
                 currTokPos++;
             
             if (*currTokPos != '\n')
@@ -133,8 +132,7 @@ aToken getNextToken()
             res.start = currTokPos += 1;
             res.type = aToken::REGISTER;
             
-            while (*currTokPos != ' ' &&
-                   *currTokPos != '\n')
+            while (*currTokPos != ' ' && *currTokPos != '\n' && *currTokPos != '\t')
                 currTokPos++;
             
             if (*currTokPos != '\n')
@@ -151,8 +149,7 @@ aToken getNextToken()
                 res.type = aToken::OP_CODE;
             
             // Find end of token (using regular delimiters)
-            while (*currTokPos != ' ' &&
-                   *currTokPos != '\n')
+            while (*currTokPos != ' ' && *currTokPos != '\n' && *currTokPos != '\t')
                 currTokPos++;
             
             if (*currTokPos != '\n')
