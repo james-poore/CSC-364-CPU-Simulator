@@ -1,6 +1,6 @@
 //
 //  tokenizer.cpp
-//  CPU Simulator Loader
+//  CPU Simulator Tokenizer
 //
 //  Created by James Poore on 4/11/12.
 //  Copyright (c) 2012 James Poore. All rights reserved.
@@ -9,7 +9,6 @@
 
 
 #include "tokenizer.h"
-//#include "loader.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

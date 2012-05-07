@@ -118,6 +118,19 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     doneFlag = true;
                     break;
                 }
+                
+                else if(strncasecmp(memLoc2, "0b") == 0) {
+                    memLoc2 = memLoc2.substr(2, memLoc2.size() - 2);
+                    intToBoolQuartet(binaryToInt(memLoc2, memory), WORD_SIZE, 1, tempMemLoc);
+                    setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
+                }
+                
+                else if(strncasecmp(memLoc2, "0x") == 0) {
+                    memLoc2 = memLoc2.substr(2, memLoc2.size() - 2);
+                    intToBoolQuartet(hexToInt(memLoc2, memory), WORD_SIZE, 1, tempMemLoc);
+                    setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
+                }
+                
                 else {
                     intToBoolQuartet(atoi(memLoc2), WORD_SIZE, 1, tempMemLoc);
                     setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
