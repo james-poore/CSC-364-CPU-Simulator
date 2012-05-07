@@ -57,6 +57,21 @@ int boolNtoInt(int size, bool word[])
 }
 
 /*
+ * int boolNtoIntPositive(int size, bool word[])
+ * Converts the binary number (in the bool array) to a positive int.
+ * size refers to the size of the boolean array.
+ * Returns the converted int.
+ */
+int boolNtoIntPositive(int size, bool word[])
+{
+    int sum = 0;
+    for(int i = size - 1; i >= 0; i--)
+    {
+        sum += word[i] * pow(2, i); 
+    }
+    return sum;
+}
+/*
  * int boolQuartetToInt(int size, int lengthOfBinaryNumber, int quartetNum, bool word[])
  * Converts a quartet/octet in memory to an integer.
  * Returns the converted integer number.
@@ -740,13 +755,24 @@ void printRegisters(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
             }
         }
         
-        if(j != PROGRAM_COUNTER)
+        switch(j)
         {
-            cout << " " << boolNtoInt(WORD_SIZE, memory[j]) << endl; // Print out the decimal version.
-        }
-        else
-        {
-            cout << " " << getProgramCounter(memory) << endl; // Print out the decimal version.
+            case OUTPUT_REGISTER_2:
+            {
+                cout << " " << boolNtoIntPositive(WORD_SIZE, memory[j]) << endl; // Print out the decimal version.
+                break;
+            }
+            case PROGRAM_COUNTER:
+            {
+                cout << " " << getProgramCounter(memory) << endl; // Print out the decimal version.
+                break;
+            }
+            default:
+            {
+                cout << " " << boolNtoInt(WORD_SIZE, memory[j]) << endl; // Print out the decimal version.
+                break;
+            }
+            
         }
     }
 }
@@ -870,11 +896,14 @@ void switchSign(int size, bool number[])
  * Waits for the enter key to be pressed before executing the next instruction.
  * Type in anything with the letter e to exit the program.
  */
-void waitForEnter()
+void waitForEnter(bool memory[TOTAL_MEM_SIZE][WORD_SIZE])
 {
-    cout << endl << "Type in e or exit to quit, or hit enter to continue" << endl;
+    cout << endl << "Type in e or exit to quit, hit enter to continue, or type in a number between 0 and ";
+    cout << TOTAL_MEM_SIZE - 1 << endl << "to move the program counter to that location." << endl;
     int c;
     fflush( stdout );
+    stringstream ss;
+    int programCounterFlag = 0;
     do 
     {
         c = getchar(); 
@@ -882,9 +911,32 @@ void waitForEnter()
         {
             exit(EXIT_SUCCESS);
         }
+        else if(c >= 48 && c <=57)
+        {
+            ss << (char)c;
+            programCounterFlag = 1;
+        }
     }
     while ((c != '\n') && (c != EOF));
-    
+    if(programCounterFlag == 1)
+    {
+        int programCounter = 0;
+        ss >> programCounter;
+        setMemoryInt(PROGRAM_COUNTER, programCounter, memory);
+        printUserDisplay(memory);
+        cout << endl << "Type in e or exit to quit, or hit enter to continue." << endl;
+        c = 0;
+        fflush( stdout );
+        do 
+        {
+            c = getchar(); 
+            if(c == 101) // The letter e.
+            {
+                exit(EXIT_SUCCESS);
+            }
+        }
+        while ((c != '\n') && (c != EOF));
+    }
 }
 
 /*

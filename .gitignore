@@ -4,3 +4,7 @@ CPU-Simulator
 Main.o
 
 Helper.o
+
+tokenizer.o
+
+tokenizer.o

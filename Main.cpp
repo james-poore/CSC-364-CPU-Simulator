@@ -27,13 +27,16 @@ void runProgram()
     while(true)
     {
         int readWrite = memory[13][15];
-        if(readWrite == 0)
+        if(readWrite == 0) // If read/write pin is set to read, set the lower 8 bits of INPUT_REGISTER to the value of the memory address in OUTPUT_REGISTER_2.
         {
-            
+            copyBooleanArrayQuartet(memory[boolNtoIntPositive(WORD_SIZE, memory[OUTPUT_REGISTER_2])], memory[INPUT_REGISTER], WORD_SIZE / 2, 1);
         }
-        else if (readWrite == 1)
+        else if (readWrite == 1) // If read/write pin is set to write, write the lower 8 bits of OUTPUT_REGISTER_1 to the memory address in OUTPUT_REGISTER_2
         {
-            
+            for(int i = (WORD_SIZE / 2) - 1; i >= 0; i--)
+            {
+                memory[boolNtoIntPositive(WORD_SIZE, memory[OUTPUT_REGISTER_2])][i] = memory[OUTPUT_REGISTER_1][i];
+            }
         }
         else
         {
@@ -194,7 +197,7 @@ void runProgram()
         
         
         printUserDisplay(memory); // Prints everything that the user needs to see to the screen.
-        waitForEnter(); // Wait for the user to press enter before moving on to the next instruction.
+        waitForEnter(memory); // Wait for the user to press enter before moving on to the next instruction.
     }
 }
 
@@ -211,7 +214,7 @@ int main(int argc, char* argv[])
         loadFile(testFile, memory);
         
         printUserDisplay(memory); // Prints everything that the user needs to see to the screen.
-        waitForEnter(); // Wait for the user to press enter before moving on to the next instruction.
+        waitForEnter(memory); // Wait for the user to press enter before moving on to the next instruction.
         runProgram(); // Execute the program.
         fclose(testFile);
     }
