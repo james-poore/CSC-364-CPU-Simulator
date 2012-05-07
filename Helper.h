@@ -11,6 +11,7 @@
 // Functions that return an int.
 int binaryToInt(string binaryString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 int boolNtoInt(int size, bool word[]);
+int boolNtoIntPositive(int size, bool word[]);
 int boolQuartetToInt(int size, int lengthOfBinaryNumber, int quartetNum, bool word[]);
 
 int getProgramCounter(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
@@ -45,6 +46,6 @@ void setMemoryBoolArray(int location, bool number[WORD_SIZE], bool memory[TOTAL_
 void setMemoryInt(int location, int number, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 void switchSign(int size, bool number[]);
 
-void waitForEnter();
+void waitForEnter(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 
 void zeroBoolArray(int size, bool word[]);

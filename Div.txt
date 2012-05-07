@@ -1,6 +1,7 @@
 #1=17
 #2=5
-#96=ASM
+#14=21
+#20=ASM
 SET R3, 0
 SUBI R3, R3, 1
 MOVE R4, R3
