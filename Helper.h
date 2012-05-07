@@ -9,17 +9,19 @@
 #include "Global.h"
 
 // Functions that return an int.
+int binaryToInt(string binaryString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 int boolNtoInt(int size, bool word[]);
 int boolQuartetToInt(int size, int lengthOfBinaryNumber, int quartetNum, bool word[]);
 
 int getProgramCounter(bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 
+int hexToInt(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
+
 int overflowTest(int size, bool word[]);
 
 string binaryToString(string binaryString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
-int binaryToInt(string binaryString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
+
 string hexToString(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
-int hexToInt(string hexString, bool memory[TOTAL_MEM_SIZE][WORD_SIZE]);
 
 // Functions that return nothing.
 void bitwiseAdd(int sizeA, bool wordA[], int sizeB, bool wordB[], bool result[]);

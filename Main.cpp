@@ -22,12 +22,6 @@ string currentInstructionArray[5];
 
 /* NOTE: Functions go from most significant bit to least significant bit. */
 
-/*
- TODO:
- Program counter isn't being set in loader
- Other misc. loader bugs.
- */
-
 void runProgram()
 {
     while(true)
@@ -192,11 +186,18 @@ void runProgram()
 int main(int argc, char* argv[])
 {
     FILE * testFile; // Load in the file given by argv[1] into memory.
-    testFile = fopen(argv[1], "r");
-    loadFile(testFile, memory);
-    
-
-    printUserDisplay(memory); // Prints everything that the user needs to see to the screen.
-    waitForEnter(); // Wait for the user to press enter before moving on to the next instruction.
-    runProgram(); // Execute the program.
+    if((testFile = fopen(argv[1], "r")) == NULL)
+    {
+        cerr << "The file " << argv[1] << " does not exist." << endl;
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        loadFile(testFile, memory);
+        
+        printUserDisplay(memory); // Prints everything that the user needs to see to the screen.
+        waitForEnter(); // Wait for the user to press enter before moving on to the next instruction.
+        runProgram(); // Execute the program.
+        fclose(testFile);
+    }
 }
