@@ -114,10 +114,6 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 memLoc2[k] = '\0';
                 
-                if ( (atoi(memLoc2) > 32767)  || (atoi(memLoc2) < -32768)  ) {
-                    printError("Expected value between -32768 and 32767 before ';' ");
-                    exit(EXIT_FAILURE);
-                }
                 
                 if (strcasecmp(memLoc2, "ASM") == 0) {
                     memLocation = atoi(memLoc1);
@@ -127,27 +123,46 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
                 else if(strncasecmp(memLoc2, "0b", 2) == 0) {
+                    
+                    binaryValue = binaryToInt(memLoc2, memory);
+                    if (binaryValue > 32767 || binaryValue < -32768) {
+                        
+                        printError("Expected value between -32768 and 32767 before ';' ");
+                        exit(EXIT_FAILURE);r
+                    }
                     stringstream ss;
                     string s;
                     ss << memLoc2;
                     s = ss.str();
                     s = s.substr(2, s.size() - 2);
                     strcpy(memLoc2, s.c_str());
-                    intToBoolQuartet(binaryToInt(memLoc2, memory), WORD_SIZE, 1, tempMemLoc);
+                    intToBoolQuartet(binaryValue, WORD_SIZE, 1, tempMemLoc);
                     setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
                     break;
                 }
                 
                 else if(strncasecmp(memLoc2, "0x", 2) == 0) {
+                    
+                    hexValue = hexToInt(memLoc2, memory);
+                    if (hexValue > 32767 || hexValue < -32768) {
+                        
+                        printError("Expected value between -32768 and 32767 before ';' ");
+                        exit(EXIT_FAILURE);r
+                    }
                     stringstream ss;
                     string s;
                     ss << memLoc2;
                     s = ss.str();
                     s = s.substr(2, s.size() - 2);
                     strcpy(memLoc2, s.c_str());
-                    intToBoolQuartet(hexToInt(memLoc2, memory), WORD_SIZE, 1, tempMemLoc);
+                    intToBoolQuartet(hexValue, WORD_SIZE, 1, tempMemLoc);
                     setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
                     break;
+                }
+                
+                else if ( (atoi(memLoc2) > 32767)  || (atoi(memLoc2) < -32768)  ) {
+                    printError("Expected value between -32768 and 32767 before ';' ");
+                    exit(EXIT_FAILURE);
                 }
                 
                 else {
