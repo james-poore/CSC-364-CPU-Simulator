@@ -1,7 +1,8 @@
 #2=0X1011
+#4=0b1011
 #100=ASM
-SET R2, 0X10
-MOVE R7, R3 			//al;kfjaslkjflasdj asdlfkjasdl;jkf asdlkfj;
+SET R2, 
+MOVE R7, R3
 SET R8, 0
 SUBI R9, R8, 4
 INCIZ R10, 12, R8

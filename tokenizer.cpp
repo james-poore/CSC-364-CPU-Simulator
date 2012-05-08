@@ -111,7 +111,7 @@ aToken getNextToken()
         case '8':
         case '9':
             if (!hexBinFlag) {
-                res.type = aToken::DATA;
+                res.type = aToken::DECIMAL;
             }
             
             res.start = currTokPos;

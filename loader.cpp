@@ -63,11 +63,14 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     int counter = 4;
     int regNum = 0;
+    int dataValue = 0;
     int i = 0;
     int j = 0;
     int k = 0;
     bool setFlag = 0;
     bool argFlag = 0;
+    bool decimalFlag = 0;
+    bool binaryFlag = 0;
     
     while ((!doneFlag)) {
         
@@ -163,48 +166,57 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 
                 if (strcasecmp(expandedToken, "MOVE") == 0) {
+                    
                     loadValue(instruction, counter, 0, 0, 0, 0);
                     argFlag = 1;
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "NOT") == 0) {
+                    
                     loadValue(instruction, counter, 0, 0, 0, 1);
                     argFlag = 1;
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "AND") == 0) {
+                    
                     loadValue(instruction, counter, 0, 0, 1, 0);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "OR") == 0) {
+                    
                     loadValue(instruction, counter, 0, 0, 1, 1);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "ADD") == 0) {
+                    
                     loadValue(instruction, counter, 0, 1, 0, 0);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "SUB") == 0) {
+                    
                     loadValue(instruction, counter, 0, 1, 0, 1);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "ADDI") == 0) {
+                    
                     loadValue(instruction, counter, 0, 1, 1, 0);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "SUBI") == 0) {
+                    
                     loadValue(instruction, counter, 0, 1, 1, 1);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "SET") == 0) {
+                    
                     loadValue(instruction, counter, 1, 0, 0, 0);
                     argFlag = 1;
                     setFlag = true;
@@ -212,6 +224,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
                 else if (strcasecmp(expandedToken, "SETH") == 0) {
+                    
                     loadValue(instruction, counter, 1, 0, 0, 1);
                     argFlag = 1;
                     setFlag = true;
@@ -219,42 +232,50 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 }
                 
                 else if (strcasecmp(expandedToken, "INCIZ") == 0) {
+                    
                     loadValue(instruction, counter, 1, 0, 1, 0);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "DECIN") == 0) {
+                    
                     loadValue(instruction, counter, 1, 0, 1, 1);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "MOVEZ") == 0) {
+                    
                     loadValue(instruction, counter, 1, 1, 0, 0);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "MOVEX") == 0) {
+                    
                     loadValue(instruction, counter, 1, 1, 0, 1);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "MOVEP") == 0) {
+                    
                     loadValue(instruction, counter, 1, 1, 1, 0);
                     break;
                 }
                 
                 else if (strcasecmp(expandedToken, "MOVEN") == 0) {
+                    
                     loadValue(instruction, counter, 1, 1, 1, 1);
                     break;
                 }
                 
                 else {
+                    
                     printError("Invalid op-code.");
                     exit(EXIT_FAILURE);
                 }
                 
             case aToken::REGISTER:
                 while ((expandedToken[i] != ',') && (expandedToken[i] != '\n') && (expandedToken[i] != '\0')) {
+                    
                     registerNum[i] = expandedToken[i];
                     i++;
                 }
@@ -263,11 +284,13 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 regNum = atoi(registerNum);
                 
                 if (regNum > 15 || regNum < 0) {
+                    
                     printError("Invalid register number.");
                     exit(EXIT_FAILURE);
                 }
                 
                 else if (regNum == 6 && counter == 3) {
+                    
                     printError("Register 6 is the input register. Write functionality not permitted.");
                     exit(EXIT_FAILURE);
                 }
@@ -276,53 +299,61 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 intToBoolQuartet(regNum, 4, counter, instruction);
                 break;
                 
-            case aToken::DATA:                                                              //ADD ERROR REPORTING FOR VALUES THAT ARE TOO LARGE...EX 8-BIT>255 OR 4-BIT>15 FOR DECIMAL
-                                                                                            //BINARY AND HEX
-                if (setFlag == true && counter == 2) {
-                    intToBoolQuartet(atoi(expandedToken), 8, 1, instruction);
-                    break;
-                }
+            case aToken::DECIMAL:
                 
-                else if (setFlag == true && counter != 2) {
-                    printError("8-bit data given, 4-bit data expected.");
-                    exit(EXIT_FAILURE);
-                }
-                
-                else {
-                    intToBoolQuartet(atoi(expandedToken), 4, counter, instruction);
-                    break;
-                }
+                dataValue = atoi(expandedToken);
+                decimalFlag = true;
                 
             case aToken::BINARY:
-                if (setFlag == true && counter == 2) {
-                    intToBoolQuartet(binaryToInt(expandedToken, memory), 8, 1, instruction);
-                    break;
-                }
                 
-                else if (setFlag == true && counter != 2) {
-                    printError("8-bit data given, 4-bit data expected.");
-                    exit(EXIT_FAILURE);
-                }
-                
-                else {
-                    intToBoolQuartet(binaryToInt(expandedToken, memory), 4, counter, instruction);
-                    break;
+                if (!decimalFlag) {
+                    
+                    dataValue = binaryToInt(expandedToken, memory);
+                    binaryFlag = true;
                 }
                 
             case aToken::HEX:
+                
+                if (!decimalFlag && !binaryFlag) {
+                
+                    dataValue = hexToInt(expandedToken, memory);
+                }
+                
                 if (setFlag == true && counter == 2) {
-                    intToBoolQuartet(hexToInt(expandedToken, memory), 8, 1, instruction);
-                    break;
+                    
+                    if (dataValue < 256 && dataValue >= 0) {
+                        
+                        intToBoolQuartet(dataValue, 8, 1, instruction);
+                        break;
+                    }
+                    
+                    else {
+                        
+                        printError("Data given is larger than 8-bits");
+                        exit(EXIT_FAILURE);
+                    }
                 }
                 
                 else if (setFlag == true && counter != 2) {
+                    
                     printError("8-bit data given, 4-bit data expected.");
                     exit(EXIT_FAILURE);
                 }
                 
                 else {
-                    intToBoolQuartet(hexToInt(expandedToken, memory), 4, counter, instruction);
-                    break;
+                    
+                    if (dataValue < 16 && dataValue >= 0) {
+                        
+                        intToBoolQuartet(dataValue, 4, counter, instruction);
+                        break;
+                    }
+                    
+                    else {
+                        
+                        printError("Data given is larger than 4-bits");
+                        exit(EXIT_FAILURE);
+                    }
+                    
                 }
                 
             default:
@@ -339,10 +370,13 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     }
 
     if (counter == -1) {
+        
         setMemoryBoolArray(memLocation, instruction, memory);
         memLocation++;
     }
+    
     else if ( (argFlag == 1) && (counter == 0)) {
+        
         setMemoryBoolArray(memLocation, instruction, memory);
         memLocation++;
     }
