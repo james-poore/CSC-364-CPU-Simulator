@@ -64,6 +64,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     int counter = 4;
     int regNum = 0;
     int dataValue = 0;
+    int hexValue = 0;
+    int binaryValue = 0;
     int i = 0;
     int j = 0;
     int k = 0;
@@ -128,7 +130,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     if (binaryValue > 32767 || binaryValue < -32768) {
                         
                         printError("Expected value between -32768 and 32767 before ';' ");
-                        exit(EXIT_FAILURE);r
+                        exit(EXIT_FAILURE);
                     }
                     stringstream ss;
                     string s;
@@ -147,7 +149,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     if (hexValue > 32767 || hexValue < -32768) {
                         
                         printError("Expected value between -32768 and 32767 before ';' ");
-                        exit(EXIT_FAILURE);r
+                        exit(EXIT_FAILURE);
                     }
                     stringstream ss;
                     string s;
