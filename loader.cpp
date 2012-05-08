@@ -76,6 +76,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
     
     while ((!doneFlag)) {
         
+        LAST_MINUTE_FIX_FLAG = 0;
+        
         if (memLocation > 65535) {
             printError("Program exceeds bounds of memory");
             exit(EXIT_FAILURE);
@@ -101,8 +103,8 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 memLoc1[j] = '\0';
                 
-                if ( atoi(memLoc1) > 65535 ) {
-                    printError("Expected value less than 65535 before '=' ");
+                if ( atoi(memLoc1) > 65535 || atoi(memLoc1) < 0 ) {
+                    printError("Expected value between 0 and 65535 before '=' ");
                     exit(EXIT_FAILURE);
                 }
                 
@@ -116,8 +118,14 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 memLoc2[k] = '\0';
                 
+                LAST_MINUTE_FIX_FLAG = 1;
                 
                 if (strcasecmp(memLoc2, "ASM") == 0) {
+                    
+                    if ( atoi(memLoc1) > 65535 || atoi(memLoc1) < 16 ) {
+                        printError("Expected value between 16 and 65535 before '=' ");
+                        exit(EXIT_FAILURE);
+                    }
                     memLocation = atoi(memLoc1);
                     setMemoryInt(PC, memLocation, memory);
                     doneFlag = true;
@@ -126,18 +134,19 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 else if(strncasecmp(memLoc2, "0b", 2) == 0) {
                     
-                    binaryValue = binaryToInt(memLoc2, memory);
-                    if (binaryValue > 32767 || binaryValue < -32768) {
-                        
-                        printError("Expected value between -32768 and 32767 before ';' ");
-                        exit(EXIT_FAILURE);
-                    }
                     stringstream ss;
                     string s;
                     ss << memLoc2;
                     s = ss.str();
                     s = s.substr(2, s.size() - 2);
                     strcpy(memLoc2, s.c_str());
+                    binaryValue = binaryToInt(memLoc2, memory);
+                    
+                    if (binaryValue > 32767 || binaryValue < -32768) {
+                        
+                        printError("Expected value between -32768 and 32767 before ';' ");
+                        exit(EXIT_FAILURE);
+                    }
                     intToBoolQuartet(binaryValue, WORD_SIZE, 1, tempMemLoc);
                     setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
                     break;
@@ -145,18 +154,19 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                 
                 else if(strncasecmp(memLoc2, "0x", 2) == 0) {
                     
-                    hexValue = hexToInt(memLoc2, memory);
-                    if (hexValue > 32767 || hexValue < -32768) {
-                        
-                        printError("Expected value between -32768 and 32767 before ';' ");
-                        exit(EXIT_FAILURE);
-                    }
                     stringstream ss;
                     string s;
                     ss << memLoc2;
                     s = ss.str();
                     s = s.substr(2, s.size() - 2);
                     strcpy(memLoc2, s.c_str());
+                    hexValue = hexToInt(memLoc2, memory);
+                    
+                    if (hexValue > 32767 || hexValue < -32768) {
+                        
+                        printError("Expected value between -32768 and 32767 before ';' ");
+                        exit(EXIT_FAILURE);
+                    }
                     intToBoolQuartet(hexValue, WORD_SIZE, 1, tempMemLoc);
                     setMemoryBoolArray(atoi(memLoc1), tempMemLoc, memory);
                     break;
@@ -346,7 +356,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     
                     else {
                         
-                        printError("Data given is larger than 8-bits");
+                        printError("Data given is larger than 8-bits or negative");
                         exit(EXIT_FAILURE);
                     }
                 }
@@ -367,7 +377,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     
                     else {
                         
-                        printError("Data given is larger than 4-bits");
+                        printError("Data given is larger than 4-bits or negative");
                         exit(EXIT_FAILURE);
                     }
                     

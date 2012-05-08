@@ -559,7 +559,7 @@ void intToBoolN(int number, int size, bool word[])
  */
 void intToBoolQuartet(int number, int size, int quartetNum, bool word[])
 {
-    if(number < 0)
+    if(number < 0 && !LAST_MINUTE_FIX_FLAG)
     {
         cerr << "Quartets can only be set to positive values." << endl;
         exit(EXIT_FAILURE);

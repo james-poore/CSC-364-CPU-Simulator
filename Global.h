@@ -13,6 +13,7 @@ extern int PROG_LOC;
 
 extern int NEGATIVE_FLAG;
 extern int OVERFLOW_FLAG;
+extern int LAST_MINUTE_FIX_FLAG; 
 
 extern string currentInstructionArray[5]; // The English version of the current instruction, the 2 previous, and the 2 next instructions.
 

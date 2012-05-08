@@ -17,6 +17,7 @@ int PROG_LOC = 0;
 
 int NEGATIVE_FLAG = 0;
 int OVERFLOW_FLAG = 0;
+int LAST_MINUTE_FIX_FLAG = 0;
 
 string currentInstructionArray[5];
 

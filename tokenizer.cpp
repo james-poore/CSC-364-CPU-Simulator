@@ -89,7 +89,8 @@ aToken getNextToken()
             //res.start = currTokPos;
             //res.type = aToken::COMMENT;
             return res;
-            
+        
+        case '-':    
         case '0':
             if ((*(currTokPos + 1) == 'b') || (*(currTokPos + 1) == 'B')) {
                 res.type = aToken::BINARY;
