@@ -30,7 +30,11 @@ void runProgram()
         int readWrite = memory[13][15];
         if(readWrite == 0) // If read/write pin is set to read, set the lower 8 bits of INPUT_REGISTER to the value of the memory address in OUTPUT_REGISTER_2.
         {
-            copyBooleanArrayQuartet(memory[boolNtoIntPositive(WORD_SIZE, memory[OUTPUT_REGISTER_2])], memory[INPUT_REGISTER], WORD_SIZE / 2, 1);
+            //copyBooleanArrayQuartet(memory[boolNtoIntPositive(WORD_SIZE, memory[OUTPUT_REGISTER_2])], memory[INPUT_REGISTER], WORD_SIZE / 2, 1);
+            for(int i = (WORD_SIZE / 2) - 1; i >= 0; i--)
+            {
+                memory[INPUT_REGISTER][i] = memory[boolNtoIntPositive(WORD_SIZE, memory[OUTPUT_REGISTER_2])][i];
+            }
         }
         else if (readWrite == 1) // If read/write pin is set to write, write the lower 8 bits of OUTPUT_REGISTER_1 to the memory address in OUTPUT_REGISTER_2
         {
