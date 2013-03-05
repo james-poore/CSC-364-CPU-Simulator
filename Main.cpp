@@ -209,6 +209,11 @@ void runProgram()
 int main(int argc, char* argv[])
 {
     FILE * testFile; // Load in the file given by argv[1] into memory.
+    if(argv[1] == NULL)
+    {
+        cerr << "No file argument given.\nPlease run the program again with the file name of the assembly code as the first and only argument." << endl;
+        exit(EXIT_FAILURE);
+    }
     if((testFile = fopen(argv[1], "r")) == NULL)
     {
         cerr << "The file " << argv[1] << " does not exist." << endl;
