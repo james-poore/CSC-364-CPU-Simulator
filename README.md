@@ -26,52 +26,71 @@ To set the program counter and loading point of your program, do #VAL=ASM, where
 To comment your code, use //insert_comment_here
 
 The format of the various instructions are (spaces are important, replace A, B, D with register values, replace # with a value):
+
 MOVE RD, RA
+
 -Moves the value in register A into register D.
 
 NOT RD, RA
+
 -Performs a bitwise NOT on register A and saves the result into register D.
 
 AND RD, RA, RB
+
 -Performs a bitwise AND on register A and register B and saves the result into register D.
 
 OR RD, RA, RB
+
 -Performs a bitwise OR on register A and register B and saves the result into register D.
 
 ADD RD, RA, RB
+
 -Adds the values in register A and register B and saves the result into register D.
 
 SUB RD, RA, RB
+
 -Subtracts the values in register A and register B and saves the result into register D.
 
 ADDI RD, RA, #
+
 -Adds RA and # (4 bit number) and saves the result into register D.
 
 SUBI RD, RA, #
+
 -Subtracts RA and # (4 bit number) and saves the result into register D.
 
 SET RD, #
+
 -Sets RD to be 8 0's followed by # (8 bit number).
+
 -For example, SET R5, 42 would result in R5 being 0000 0000 0010 1010.
 
 SETH RD, #
+
 -Sets the first 8 bits of RD to be # (8 bit number) followed by the previous 8 bits of RD.
+
 -For example, if R5 was 1100 1010 0010 1010, after SETH R5, 42 it would become 0010 1010 0010 1010.
 
 INCIZ RD, #, RB
+
 -Adds RD and # (4 bit number) and saves the result into RD only if RB == 0(the value in RB is 0).
 
 DECIN RD, #, RB
+
 -Subtracts RD and # (4 bit number) and saves the result into RD only if RB15 == 1 (the value in RB is negative).
 
 MOVEZ RD, RA, RB
+
 -Sets RD to the value of RA if RB == 0 (the value in RB is 0).
 
 MOVEX RD, RA, RB
+
 -Sets RD to the value of RA if RB != 0 (the value in RB is not zero).
 
 MOVEP RD, RA, RB
+
 -Sets RD to the value of RA if RB15 == 0 (the value in RB is positive).
 
-MVOEN RD, RA, RB
+MOVEN RD, RA, RB
+
 -Sets RD to the value of RA if RB15 == 1 (the value in RB is negative).
