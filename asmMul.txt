@@ -1,0 +1,17 @@
+// mul R3=R1*R2 
+# 1 = 25
+# 2=4
+#15=100
+#100=asm
+
+SET R3,0
+SUB R4,R3,R2
+MOVEN R2,R4,R1 // -R2 if R1 is neg
+SUB R4,R3,R1
+MOVEN R1,R4,R1 //-R1 if R1 is neg
+INCIZ PC, 4,R1 //GOTO END // <start 
+SUBI R1,R1,1  
+ADD R3,R3,R2
+SUBI PC, PC, 3 // goto start
+MOVE PC,PC // < END
+

@@ -17,6 +17,13 @@ using namespace std;
 
 static char* tokLine = NULL;
 
+void findEndOfToken()
+{
+    // Find end of token (using regular delimiters)
+    while (*currTokPos != ' ' && *currTokPos != '\n' && *currTokPos != '\t')
+        currTokPos++;
+}
+
 void startToken(char* line)
 {
     if (line == NULL)
@@ -127,7 +134,18 @@ aToken getNextToken()
             }
             
             return res;
+        /*case 'p':
+        case 'P':
+            /*if (*(currTokPos + 1) != 'C' && *(currTokPos + 1) != 'c') {
+                printf("Token not recognized.");
+                exit(EXIT_FAILURE);
+            }
             
+                res.start = currTokPos;
+                res.type = aToken::PCOUNTER;
+                return res;*/
+            
+        case 'r':
         case 'R':
             res.start = currTokPos += 1;
             res.type = aToken::REGISTER;

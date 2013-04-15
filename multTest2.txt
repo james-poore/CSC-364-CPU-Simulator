@@ -1,0 +1,12 @@
+//multiply R3 = R1 * R2
+//does not work as is
+#1=25
+#2=4
+#15=100
+#100=ASM
+SET R3, 0
+SUB R4, R3, R2
+MOVEN R2, R4, R1
+SUB R4, R3, R1
+MOVEN R1, R4, R1
+INCIZ R15, 4, R1

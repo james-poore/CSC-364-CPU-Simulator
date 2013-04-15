@@ -1,0 +1,22 @@
+// R3=R1/R2 //integer 
+// R4=R1%R2 //remainder
+// if R2==0, R3=R4=-1
+
+# 1 = 19
+# 2= 5
+#15=100
+#100=asm
+
+SET R3, 0XFF
+SETH R3, 0XFF // R3=-1
+MOVE R4, R3
+INCIZ PC, 8, R2 // >END
+ADDI R5, PC, 6 //DONE
+SET R3,0
+SUB R1, R1,R2  //<start
+MOVEN PC, R5, R1 //>DONE
+ADDI R3, R3, 1
+SUBI PC, PC, 3 //>start
+ADD R4, R1, R2 //<DONE
+MOVE PC,PC // <END
+

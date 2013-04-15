@@ -21,7 +21,7 @@
 #include "Global.h"
 
 #define MAX_LINE_LENGTH 500
-#define PC 15
+//#define PC 15
 
 using namespace std;
 
@@ -127,7 +127,7 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                         exit(EXIT_FAILURE);
                     }
                     memLocation = atoi(memLoc1);
-                    setMemoryInt(PC, memLocation, memory);
+                    setMemoryInt(15, memLocation, memory);
                     doneFlag = true;
                     break;
                 }
@@ -299,6 +299,9 @@ void processLine(char *line, bool memory[TOTAL_MEM_SIZE] [WORD_SIZE]) {
                     printError("Invalid op-code.");
                     exit(EXIT_FAILURE);
                 }
+            /*case aToken::PCOUNTER:
+                intToBoolQuartet(15, 4, counter, instruction);
+                break;*/
                 
             case aToken::REGISTER:
                 while ((expandedToken[i] != ',') && (expandedToken[i] != '\n') && (expandedToken[i] != '\0')) {
