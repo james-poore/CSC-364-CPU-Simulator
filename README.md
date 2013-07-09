@@ -29,7 +29,7 @@ The format of the various instructions are (spaces are important, replace A, B, 
 
 MOVE RD, RA
 
--Moves the value in register A into register D.
+-Moves the value in register A into register D. 
 
 NOT RD, RA
 
